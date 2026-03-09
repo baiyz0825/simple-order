@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("staff") // 'admin' | 'staff'
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id                Int       @id @default(autoincrement())
+  name              String
+  sort              Int       @default(0)
+  isActive          Boolean   @default(true)
+  processTemplateId Int?
+  createdAt         DateTime  @default(now())
+  products          Product[]
+}
+
+model SpecTemplate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  type      String   @default("single") // 'single' | 'multiple'
+  options   String   @default("[]") // JSON: [{ name, priceDelta }]
+  createdAt DateTime @default(now())
+}
+
+model ProcessTemplate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  steps     String   @default("[]") // JSON: [{ name, sort }]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id                Int      @id @default(autoincrement())
+  categoryId        Int
+  category          Category @relation(fields: [categoryId], references: [id])
+  name              String
+  description       String   @default("")
+  price             Int      // 分
+  imageUrl          String   @default("")
+  isOnSale          Boolean  @default(true)
+  sort              Int      @default(0)
+  specs             String   @default("[]") // JSON
+  processTemplateId Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  orderNo       String    @unique
+  sessionId     String
+  items         String    // JSON: 订单商品详情
+  totalPrice    Int       // 分
+  status        String    @default("pending") // pending|confirmed|ready|completed|cancelled
+  estimatedTime Int?
+  remark        String    @default("")
+  createdAt     DateTime  @default(now())
+  confirmedAt   DateTime?
+  readyAt       DateTime?
+  completedAt   DateTime?
+}
