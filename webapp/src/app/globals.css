@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #FF8D4D;
+  --color-primary-light: #FFB088;
+  --color-primary-dark: #E67A3A;
+  --color-ios-bg: #F2F2F7;
+  --color-text-main: #1C1C1E;
+  --color-text-secondary: #8E8E93;
+  --color-text-light: #C7C7CC;
+  --color-border-color: #E5E5EA;
+  --color-progress-blue: #007AFF;
+  --color-success-green: #34C759;
+  --color-danger-red: #FF3B30;
+  --color-background: #ffffff;
+  --color-foreground: #1C1C1E;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 移动端视口优化 */
+html {
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* 隐藏滚动条但保持可滚动 */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
