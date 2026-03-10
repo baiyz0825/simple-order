@@ -55,10 +55,10 @@ export default function CartBar() {
 
           {/* 内容 */}
           <div
-            className={`relative z-10 max-h-[60vh] rounded-t-2xl bg-white transition-transform duration-250 ease-out ${
+            className={`relative z-10 mx-auto w-full max-h-[60vh] rounded-t-2xl bg-white transition-transform duration-250 ease-out ${
               animateDetail ? 'translate-y-0' : 'translate-y-full'
             }`}
-            style={{ marginBottom: '60px' }}
+            style={{ marginBottom: '60px', maxWidth: 'var(--app-max-width)' }}
           >
             {/* 头部 */}
             <div className="flex items-center justify-between border-b border-border-color px-4 py-3">
@@ -95,17 +95,8 @@ export default function CartBar() {
                           sizes="48px"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center text-text-light">
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                          >
-                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
+                        <div className="flex h-full w-full items-center justify-center rounded-lg bg-gradient-to-br from-orange-50 to-amber-100">
+                          <span className="text-xl">☕</span>
                         </div>
                       )}
                     </div>
@@ -181,9 +172,9 @@ export default function CartBar() {
         </div>
       )}
 
-      {/* 底部购物车浮层 */}
-      <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="mx-3 mb-[max(0.5rem,env(safe-area-inset-bottom))] flex items-center rounded-full bg-[#2C2C2E]/95 px-4 py-2 shadow-lg backdrop-blur-xl">
+      {/* 底部购物车浮层 — 位于 BottomNav 上方 */}
+      <div className="fixed-bar bottom-[56px] z-50 pb-[env(safe-area-inset-bottom)]">
+        <div className="mx-3 mb-2 flex items-center rounded-full bg-[#2C2C2E]/95 px-4 py-2 shadow-lg backdrop-blur-xl">
           {/* 左侧：购物袋 + 总价 */}
           <button
             className="flex flex-1 items-center gap-3"

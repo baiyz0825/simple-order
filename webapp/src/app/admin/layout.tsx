@@ -52,6 +52,7 @@ const adminTabs = [
   {
     label: '系统配置',
     href: '/admin/categories',
+    matchPaths: ['/admin/categories', '/admin/specs', '/admin/process', '/admin/settings'],
     icon: (active: boolean) => (
       <svg
         width="22"
@@ -88,13 +89,15 @@ export default function AdminLayout({
       <main>{children}</main>
 
       {/* 底部管理导航 */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-color bg-white pb-[env(safe-area-inset-bottom)]">
-        <div className="mx-auto flex max-w-lg items-center justify-around">
+      <nav className="fixed-bar bottom-0 z-50 border-t border-border-color bg-white pb-[env(safe-area-inset-bottom)]">
+        <div className="mx-auto flex items-center justify-around">
           {adminTabs.map((tab) => {
             const isActive =
-              tab.href === '/admin'
-                ? pathname === '/admin'
-                : pathname.startsWith(tab.href)
+              'matchPaths' in tab && tab.matchPaths
+                ? tab.matchPaths.some((p: string) => pathname.startsWith(p))
+                : tab.href === '/admin'
+                  ? pathname === '/admin'
+                  : pathname.startsWith(tab.href)
 
             return (
               <Link

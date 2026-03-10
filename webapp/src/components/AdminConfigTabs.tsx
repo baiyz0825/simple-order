@@ -7,6 +7,7 @@ const configTabs = [
   { label: '分类管理', href: '/admin/categories' },
   { label: '属性模板', href: '/admin/specs' },
   { label: '制作流程', href: '/admin/process' },
+  { label: '店铺设置', href: '/admin/settings' },
 ]
 
 export default function AdminConfigTabs() {

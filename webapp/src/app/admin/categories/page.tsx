@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import AdminConfigTabs from '@/components/AdminConfigTabs'
+import CustomSelect from '@/components/CustomSelect'
 
 interface ProcessTemplate {
   id: number
@@ -238,7 +239,7 @@ export default function CategoriesPage() {
 
       {/* 新增/编辑弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
           <div className="w-full max-w-lg rounded-t-2xl bg-white p-6 pb-[calc(env(safe-area-inset-bottom)+24px)] animate-[slideUp_0.3s_ease-out]">
             <h2 className="mb-5 text-lg font-semibold text-text-main">
               {editingId ? '编辑分类' : '添加分类'}
@@ -285,25 +286,20 @@ export default function CategoriesPage() {
                 <label className="mb-1 block text-sm text-text-secondary">
                   关联制作流程
                 </label>
-                <select
+                <CustomSelect
                   value={formData.processTemplateId ?? ''}
-                  onChange={(e) =>
+                  options={[
+                    { label: '无', value: '' },
+                    ...processes.map((p) => ({ label: p.name, value: p.id })),
+                  ]}
+                  onChange={(val) =>
                     setFormData({
                       ...formData,
-                      processTemplateId: e.target.value
-                        ? Number(e.target.value)
-                        : null,
+                      processTemplateId: val ? Number(val) : null,
                     })
                   }
-                  className="w-full rounded-xl border border-border-color bg-ios-bg px-4 py-3 text-sm text-text-main outline-none focus:border-primary"
-                >
-                  <option value="">无</option>
-                  {processes.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="选择制作流程"
+                />
               </div>
             </div>
 
@@ -329,7 +325,7 @@ export default function CategoriesPage() {
 
       {/* 删除确认弹窗 */}
       {deleteConfirmId !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
           <div className="mx-4 w-full max-w-xs rounded-2xl bg-white p-6 text-center">
             <h3 className="text-base font-semibold text-text-main">
               确认删除

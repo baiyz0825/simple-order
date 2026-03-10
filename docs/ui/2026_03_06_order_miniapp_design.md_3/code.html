@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary: #007AFF;
+            --success: #34C759;
+            --warning: #FF9500;
+            --bg-ios: #F2F2F7;
+            --card-bg: #FFFFFF;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            background-color: var(--bg-ios);
+            color: #1C1C1E;
+            -webkit-font-smoothing: antialiased;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .step-active {
+            @apply text-[var(--primary)] font-semibold;
+        }
+        .step-dot {
+            @apply w-2.5 h-2.5 rounded-full bg-gray-300 relative z-10;
+        }
+        .step-dot-active {
+            @apply bg-[var(--primary)] ring-4 ring-blue-100;
+        }
+        .process-line {
+            @apply absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-20">
+<nav class="sticky top-0 z-50 ios-blur border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+<button class="p-1 -ml-1">
+<span class="material-symbols-outlined text-[var(--primary)]">arrow_back_ios</span>
+</button>
+<h1 class="text-lg font-semibold">订单详情</h1>
+<button class="p-1 -mr-1">
+<span class="material-symbols-outlined text-[var(--primary)]">share</span>
+</button>
+</nav>
+<div class="bg-white px-6 pt-8 pb-6 text-center">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
+<span class="material-symbols-outlined text-[var(--primary)] !text-4xl">coffee</span>
+</div>
+<h2 class="text-2xl font-bold mb-1">正在为您制作中</h2>
+<p class="text-gray-500 text-sm">订单号: 20260306001</p>
+</div>
+<div class="mx-4 mt-4 mb-6 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center justify-between">
+<div>
+<p class="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">预计取餐时间</p>
+<p class="text-2xl font-bold text-[var(--primary)]">14:25</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-400 mb-1">前面还有</p>
+<p class="text-lg font-semibold">3 单</p>
+</div>
+</div>
+<div class="mx-4 mb-6 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+<div class="relative flex justify-between items-center px-2">
+<div class="process-line"></div>
+<div class="absolute top-1/2 left-0 h-0.5 bg-[var(--primary)] -translate-y-1/2" style="width: 50%;"></div>
+<div class="flex flex-col items-center gap-2 relative">
+<div class="step-dot step-dot-active"></div>
+<span class="text-[10px] step-active">已下单</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative">
+<div class="step-dot step-dot-active"></div>
+<span class="text-[10px] step-active">已接单</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative">
+<div class="step-dot bg-gray-200 ring-4 ring-white"></div>
+<span class="text-[10px] text-gray-400">待取餐</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative">
+<div class="step-dot bg-gray-200 ring-4 ring-white"></div>
+<span class="text-[10px] text-gray-400">已完成</span>
+</div>
+</div>
+</div>
+<div class="px-4 space-y-4">
+<h3 class="text-sm font-semibold text-gray-500 px-2 uppercase tracking-tight">商品制作进度</h3>
+<div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+<div class="p-4 flex gap-4 border-b border-gray-50">
+<img alt="Coffee" class="w-16 h-16 rounded-xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzHmWp0zJ_V1nByTLoho-vfFxbotml0d0XWqsEJ45FgPt6jG_1kvbY1Y5rJ5H6fvloD-t-jsVRUcrbG_42IFXpgcOvbf6VWFIi5sPrpDOH5rVS_Q51sMnJQjnejjowwN_yW1GN7W632LnkxhI576CtXKAHr41inkzb4BZ5860EWeHLy4t5DzhPQUEcY3DMQ-HnqtIZtvLGQ-DNRzwPXnGSfVhArb39oXyZBWvv7DNANOiJ0lCkJI9FgSc7gVMriT7FQkfn0hQEc0U1"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold">冰美式</h4>
+<span class="text-sm font-medium">x1</span>
+</div>
+<p class="text-xs text-gray-400 mt-1">大杯 / 无糖 / 少冰</p>
+</div>
+</div>
+<div class="p-4 bg-gray-50/50">
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--success)] !text-lg">check_circle</span>
+<div class="w-px h-8 bg-gray-200"></div>
+</div>
+<div class="flex-1 pb-2">
+<div class="flex justify-between">
+<span class="text-sm font-medium">接单确认</span>
+<span class="text-[10px] text-gray-400">14:05</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--primary)] !text-lg">skillet</span>
+<div class="w-px h-8 bg-gray-200"></div>
+</div>
+<div class="flex-1 pb-2">
+<div class="flex justify-between">
+<span class="text-sm font-semibold text-[var(--primary)]">正在萃取</span>
+<span class="text-[10px] text-gray-400">14:08</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="flex flex-col items-center">
+<div class="w-4 h-4 rounded-full border-2 border-gray-200 mt-0.5"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-sm text-gray-400">封口打包</span>
+<span class="text-[10px] text-gray-300">等待中</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+<div class="p-4 flex gap-4 border-b border-gray-50">
+<img alt="Bread" class="w-16 h-16 rounded-xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvTZ_2lTaDuG42JBl5OD9LVXKZnBdtP-DCeTmP8gumQn_XxftiW7rbHZYFxyf9lnbMorz5PVduDSbB1_ebIAORfLjWMpg0BTw4novRXn1iwCzVf4I-7u40yWHQ8zaPVi6KfG4Dra-8XgvCQlxktp__PZvgFD-osmP576fdwFHBVyZY6hx8dsNo4C1ss9drPveabrzEXcB-9YkR27uTho6CZPfIGxSSAmdQuRKRifQLBk7RIwilKo4BhdmwXpA8tDpzWW387tFbXbB3"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold">全麦牛角包</h4>
+<span class="text-sm font-medium">x1</span>
+</div>
+<p class="text-xs text-gray-400 mt-1">标准加热</p>
+</div>
+</div>
+<div class="p-4 bg-gray-50/50">
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--success)] !text-lg">check_circle</span>
+<div class="w-px h-8 bg-gray-200"></div>
+</div>
+<div class="flex-1 pb-2">
+<div class="flex justify-between">
+<span class="text-sm font-medium">接单确认</span>
+<span class="text-[10px] text-gray-400">14:05</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--success)] !text-lg">check_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-sm font-medium">已加热就绪</span>
+<span class="text-[10px] text-gray-400">14:07</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 px-6 pb-12 space-y-3">
+<div class="flex justify-between text-sm">
+<span class="text-gray-500">下单时间</span>
+<span class="text-gray-900">2026-03-06 14:05:22</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-500">备注信息</span>
+<span class="text-gray-900">少冰，谢谢</span>
+</div>
+<div class="flex justify-between text-sm pt-2 border-t border-gray-200">
+<span class="font-medium">实付金额</span>
+<span class="font-bold text-lg">¥21.00</span>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 right-0 p-4 ios-blur border-t border-gray-200 flex gap-3">
+<button class="flex-1 py-3 px-4 rounded-xl border border-gray-300 font-semibold text-sm bg-white">
+            联系商家
+        </button>
+<button class="flex-[2] py-3 px-4 rounded-xl bg-[var(--primary)] text-white font-semibold text-sm shadow-md">
+            查看取餐码
+        </button>
+</div>
+
+</body></html>

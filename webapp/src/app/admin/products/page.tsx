@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import CustomSelect from '@/components/CustomSelect'
 
 /* ---------- 类型定义 ---------- */
 
@@ -461,7 +462,7 @@ export default function AdminProductsPage() {
 
       {/* ======== 编辑 / 新增弹窗 ======== */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center">
           {/* 遮罩 */}
           <div
             className="absolute inset-0 bg-black/40"
@@ -469,7 +470,7 @@ export default function AdminProductsPage() {
           />
 
           {/* 弹窗内容 */}
-          <div className="relative flex h-[90vh] w-full max-w-lg flex-col rounded-t-2xl bg-white">
+          <div className="relative flex max-h-[calc(100vh-60px)] w-full max-w-lg flex-col rounded-t-2xl bg-white">
             {/* 弹窗头部 */}
             <div className="flex items-center justify-between border-b border-border-color px-4 py-3">
               <h2 className="text-base font-semibold text-text-main">
@@ -570,25 +571,20 @@ export default function AdminProductsPage() {
                   <label className="mb-1.5 block text-sm font-medium text-text-main">
                     所属分类 <span className="text-danger-red">*</span>
                   </label>
-                  <select
+                  <CustomSelect
                     value={form.categoryId}
-                    onChange={(e) =>
+                    options={categories.map((cat) => ({
+                      label: cat.name,
+                      value: cat.id,
+                    }))}
+                    onChange={(val) =>
                       setForm((prev) => ({
                         ...prev,
-                        categoryId: Number(e.target.value),
+                        categoryId: Number(val),
                       }))
                     }
-                    className="w-full appearance-none rounded-lg border border-border-color bg-ios-bg px-3 py-2.5 text-sm text-text-main outline-none transition-colors focus:border-primary"
-                  >
-                    <option value={0} disabled>
-                      请选择分类
-                    </option>
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
+                    placeholder="请选择分类"
+                  />
                 </div>
 
                 {/* ---- 价格 ---- */}
@@ -655,23 +651,21 @@ export default function AdminProductsPage() {
                           className="flex items-center gap-2 rounded-lg border border-border-color bg-ios-bg p-2.5"
                         >
                           {/* 模板选择 */}
-                          <select
+                          <CustomSelect
                             value={spec.templateId}
-                            onChange={(e) =>
+                            options={specTemplates.map((st) => ({
+                              label: st.name,
+                              value: st.id,
+                            }))}
+                            onChange={(val) =>
                               updateSpec(
                                 index,
                                 'templateId',
-                                Number(e.target.value),
+                                Number(val),
                               )
                             }
-                            className="min-w-0 flex-1 appearance-none rounded-md border border-border-color bg-white px-2 py-1.5 text-xs text-text-main outline-none focus:border-primary"
-                          >
-                            {specTemplates.map((st) => (
-                              <option key={st.id} value={st.id}>
-                                {st.name}
-                              </option>
-                            ))}
-                          </select>
+                            className="min-w-0 flex-1"
+                          />
 
                           {/* 是否必选 toggle */}
                           <button
@@ -731,25 +725,23 @@ export default function AdminProductsPage() {
                   <label className="mb-1.5 block text-sm font-medium text-text-main">
                     制作流程
                   </label>
-                  <select
+                  <CustomSelect
                     value={form.processTemplateId ?? ''}
-                    onChange={(e) =>
+                    options={[
+                      { label: '继承分类', value: '' },
+                      ...processTemplates.map((pt) => ({
+                        label: pt.name,
+                        value: pt.id,
+                      })),
+                    ]}
+                    onChange={(val) =>
                       setForm((prev) => ({
                         ...prev,
-                        processTemplateId: e.target.value
-                          ? Number(e.target.value)
-                          : null,
+                        processTemplateId: val ? Number(val) : null,
                       }))
                     }
-                    className="w-full appearance-none rounded-lg border border-border-color bg-ios-bg px-3 py-2.5 text-sm text-text-main outline-none transition-colors focus:border-primary"
-                  >
-                    <option value="">继承分类</option>
-                    {processTemplates.map((pt) => (
-                      <option key={pt.id} value={pt.id}>
-                        {pt.name}
-                      </option>
-                    ))}
-                  </select>
+                    placeholder="选择制作流程"
+                  />
                 </div>
 
                 {/* ---- 排序 ---- */}

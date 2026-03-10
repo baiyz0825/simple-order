@@ -252,8 +252,8 @@ export default function SpecsPage() {
 
       {/* 新增/编辑弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40">
-          <div className="w-full max-w-lg rounded-t-2xl bg-white p-6 pb-[calc(env(safe-area-inset-bottom)+24px)] animate-[slideUp_0.3s_ease-out] max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
+          <div className="w-full max-w-lg rounded-t-2xl bg-white p-6 pb-[calc(env(safe-area-inset-bottom)+24px)] animate-[slideUp_0.3s_ease-out] max-h-[calc(100vh-60px)] overflow-y-auto">
             <h2 className="mb-5 text-lg font-semibold text-text-main">
               {editingId ? '编辑属性模板' : '添加属性模板'}
             </h2>
@@ -395,7 +395,7 @@ export default function SpecsPage() {
 
       {/* 删除确认弹窗 */}
       {deleteConfirmId !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
           <div className="mx-4 w-full max-w-xs rounded-2xl bg-white p-6 text-center">
             <h3 className="text-base font-semibold text-text-main">
               确认删除

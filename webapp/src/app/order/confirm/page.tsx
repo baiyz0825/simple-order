@@ -83,7 +83,7 @@ export default function OrderConfirmPage() {
           </div>
           <p className="text-base text-text-secondary">购物车为空</p>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/menu')}
             className="mt-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white"
           >
             去点单
@@ -245,7 +245,7 @@ export default function OrderConfirmPage() {
       </div>
 
       {/* 底部固定栏 */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 border-t border-border-color bg-white px-4 pb-[env(safe-area-inset-bottom)]">
+      <div className="fixed-bar bottom-0 z-10 border-t border-border-color bg-white px-4 pb-[env(safe-area-inset-bottom)]">
         <div className="flex h-14 items-center justify-between">
           <div className="flex items-baseline gap-1">
             <span className="text-sm text-text-main">合计</span>

@@ -13,3 +13,7 @@ node_modules/
 
 # Miniprogram
 miniprogram_npm/
+
+# AI assistant
+.claude/
+.codebuddy/

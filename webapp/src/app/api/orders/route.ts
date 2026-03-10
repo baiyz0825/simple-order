@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '@/lib/admin-guard'
 import { getSessionId } from '@/lib/session'
+import { getCustomerUser } from '@/lib/auth'
 import { generateOrderNo } from '@/lib/order-utils'
 
 export async function POST(request: NextRequest) {
@@ -84,10 +85,14 @@ export async function POST(request: NextRequest) {
 
     const orderNo = generateOrderNo()
 
+    // 获取当前登录的C端用户（如有）
+    const customerUser = await getCustomerUser()
+
     const order = await prisma.order.create({
       data: {
         orderNo,
         sessionId,
+        userId: customerUser?.id ?? null,
         items: JSON.stringify(orderItems),
         totalPrice,
         status: 'pending',
@@ -122,8 +127,14 @@ export async function GET(request: NextRequest) {
       const { error } = await requireAdmin()
       if (error) return error
     } else {
-      const sessionId = await getSessionId()
-      where.sessionId = sessionId
+      // C端：优先按 userId 查，未登录则按 sessionId 查
+      const customerUser = await getCustomerUser()
+      if (customerUser) {
+        where.userId = customerUser.id
+      } else {
+        const sessionId = await getSessionId()
+        where.sessionId = sessionId
+      }
     }
 
     if (statusFilter) {

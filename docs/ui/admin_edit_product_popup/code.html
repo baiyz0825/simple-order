@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec7f13",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>管理端编辑商品</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-slate-200 font-display">
+<!-- Mobile Screen Wrapper -->
+<div class="relative mx-auto h-[844px] w-[390px] overflow-hidden bg-white shadow-2xl">
+<!-- Mock Background (Dashboard behind popup) -->
+<div class="absolute inset-0 bg-black/40 z-0"></div>
+<!-- Bottom Sheet Popup -->
+<div class="absolute inset-x-0 bottom-0 z-10 flex h-[92%] flex-col rounded-t-xl bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Handle Bar -->
+<div class="flex h-6 w-full items-center justify-center pt-2">
+<div class="h-1.5 w-12 rounded-full bg-primary/20"></div>
+</div>
+<!-- Header -->
+<div class="flex items-center justify-between px-5 py-4">
+<h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">编辑商品</h2>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto px-5 pb-24">
+<!-- Image Upload Section -->
+<div class="mb-6">
+<p class="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">商品图片</p>
+<div class="group relative flex h-48 w-full items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 transition-colors hover:border-primary/50">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-primary">add_a_photo</span>
+<span class="mt-2 text-xs text-primary/70">点击更换商品主图</span>
+</div>
+<img class="absolute inset-0 h-full w-full object-cover opacity-60" data-alt="Appetizing photo of a fresh fruit tea drink" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtfDzux7n-WidleZReRLVj63FJyq0cMBEZGBOXSQhqQL7Y7x5Mwy87SLAxqBo3MHNAv3LlGxdn6Eld3Y5u3UIobCF3ZwYwXzm7q4DOb4xYI4wl759aqgQWrrMCoyWwR_S3E46htcgj5sLBP3ET2W7ajfb1IESOztepjlOeDykeUZVSW9wCtlUoBs078MpeYkQWc3X3nOR5aXUfuj5OYp079D-0zgfq2CldzsZkPraPymezoJcHAa8jlVYEscQLPG6t4HAsCpVi8DrB"/>
+</div>
+</div>
+<!-- Basic Info Fields -->
+<div class="space-y-4">
+<label class="block">
+<span class="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">商品名称</span>
+<input class="w-full rounded-lg border-primary/20 bg-white px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:text-slate-100" placeholder="请输入商品名称" type="text" value="满杯红柚"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="block">
+<span class="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">价格 (¥)</span>
+<input class="w-full rounded-lg border-primary/20 bg-white px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:text-slate-100" placeholder="0.00" type="number" value="18.00"/>
+</label>
+<label class="block">
+<span class="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">分类</span>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg border-primary/20 bg-white px-4 py-3 text-slate-900 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:text-slate-100">
+<option>鲜果茶系列</option>
+<option>芝士奶盖</option>
+<option>醇香奶茶</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">expand_more</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Specs Section -->
+<div class="mt-8">
+<div class="mb-4 flex items-center justify-between">
+<h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">规格设置</h3>
+<button class="flex items-center text-xs font-medium text-primary">
+<span class="material-symbols-outlined mr-1 text-sm">add_circle</span>
+                            添加新规格
+                        </button>
+</div>
+<div class="space-y-4">
+<!-- Spec 1 -->
+<div class="rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
+<div class="mb-3 flex items-center justify-between">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">甜度</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">delete</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">全糖</span>
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">七分糖</span>
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">五分糖</span>
+<span class="rounded-full bg-primary/20 px-3 py-1 text-xs text-primary">+ 添加选项</span>
+</div>
+</div>
+<!-- Spec 2 -->
+<div class="rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
+<div class="mb-3 flex items-center justify-between">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">温度</span>
+<span class="material-symbols-outlined text-slate-400 text-lg">delete</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">常规冰</span>
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">少冰</span>
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">去冰</span>
+<span class="rounded-full bg-white px-3 py-1 text-xs text-slate-600 shadow-sm dark:bg-slate-700 dark:text-slate-200">热饮</span>
+<span class="rounded-full bg-primary/20 px-3 py-1 text-xs text-primary">+ 添加选项</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Buttons -->
+<div class="absolute bottom-0 left-0 right-0 border-t border-primary/10 bg-white/80 p-5 backdrop-blur-md dark:bg-background-dark/80">
+<div class="flex gap-4">
+<button class="flex-1 rounded-xl border border-primary/30 py-3.5 text-center font-semibold text-primary transition-colors hover:bg-primary/5">
+                        取消
+                    </button>
+<button class="flex-[2] rounded-xl bg-primary py-3.5 text-center font-semibold text-white shadow-lg shadow-primary/20 transition-transform active:scale-95">
+                        保存发布
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

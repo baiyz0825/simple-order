@@ -1,5 +1,12 @@
 node_modules
 .next
-data
 .env
-.env.local
+*.db
+*.db-journal
+data/
+.git
+.gitignore
+*.md
+tests/
+vitest.config.ts
+.DS_Store

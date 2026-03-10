@@ -32,5 +32,19 @@ export async function getAdminUser() {
   const payload = verifyToken(token)
   if (!payload) return null
   const user = await prisma.user.findUnique({ where: { id: payload.userId } })
+  if (!user) return null
+  // 校验角色，防止普通用户伪造 admin_token 越权
+  if (user.role !== 'admin' && user.role !== 'staff') return null
+  return user
+}
+
+// C端用户认证
+export async function getCustomerUser() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('user_token')?.value
+  if (!token) return null
+  const payload = verifyToken(token)
+  if (!payload) return null
+  const user = await prisma.user.findUnique({ where: { id: payload.userId } })
   return user
 }

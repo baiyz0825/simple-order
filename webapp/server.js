@@ -5,15 +5,16 @@ const { WebSocketServer } = require('ws')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
-const handle = app.getRequestHandler()
-
 app.prepare().then(() => {
+  const handle = app.getRequestHandler()
+  const upgrade = app.getUpgradeHandler()
   const server = createServer((req, res) => {
     const parsedUrl = parse(req.url, true)
     handle(req, res, parsedUrl)
   })
 
-  const wss = new WebSocketServer({ server, path: '/ws' })
+  // 不绑定到 server，手动处理 upgrade
+  const wss = new WebSocketServer({ noServer: true })
 
   // 存储连接
   const adminClients = new Set()
@@ -41,6 +42,20 @@ app.prepare().then(() => {
       adminClients.delete(ws)
       orderSubscriptions.forEach(subs => subs.delete(ws))
     })
+  })
+
+  // 手动处理 WebSocket upgrade 请求
+  server.on('upgrade', (req, socket, head) => {
+    const { pathname } = parse(req.url, true)
+    if (pathname === '/ws') {
+      // 我们的业务 WebSocket
+      wss.handleUpgrade(req, socket, head, (ws) => {
+        wss.emit('connection', ws, req)
+      })
+    } else {
+      // Next.js HMR 等其他 WebSocket 请求
+      upgrade(req, socket, head)
+    }
   })
 
   // 暴露广播函数到全局，供 API 路由调用

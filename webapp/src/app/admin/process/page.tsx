@@ -222,9 +222,9 @@ export default function ProcessPage() {
 
       {/* 弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
-          <div className="relative w-full max-h-[90vh] overflow-y-auto rounded-t-2xl bg-white pb-[env(safe-area-inset-bottom)]">
+          <div className="relative w-full max-h-[calc(100vh-60px)] overflow-y-auto rounded-t-2xl bg-white pb-[env(safe-area-inset-bottom)]">
             {/* 拖拽指示条 */}
             <div className="sticky top-0 z-10 bg-white pt-3 pb-2 px-4 border-b border-border-color">
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border-color" />

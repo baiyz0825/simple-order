@@ -141,9 +141,10 @@ export default function ProductDetailModal({
 
       {/* 弹窗内容 */}
       <div
-        className={`relative z-10 max-h-[85vh] overflow-hidden rounded-t-2xl bg-white transition-transform duration-250 ease-out ${
+        className={`relative z-10 mx-auto w-full max-h-[85vh] overflow-hidden rounded-t-2xl bg-white transition-transform duration-250 ease-out ${
           animateIn ? 'translate-y-0' : 'translate-y-full'
         }`}
+        style={{ maxWidth: 'var(--app-max-width)' }}
       >
         {/* 拖拽指示条 */}
         <div className="flex justify-center py-2">

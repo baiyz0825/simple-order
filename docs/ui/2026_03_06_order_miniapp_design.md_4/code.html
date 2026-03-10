@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Admin Order Management Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary-brand: #FF6B00;--bg-ios: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --text-main: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --status-pending: #FF9500;
+            --status-progress: #007AFF;
+            --status-ready: #34C759;
+            --border-light: #E5E5EA;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-ios);
+            color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-shadow {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .tab-active {
+            color: var(--primary-brand);
+            border-bottom: 2px solid var(--primary-brand);
+        }
+        .order-card {
+            border-radius: 12px;
+            background: var(--card-bg);
+            margin-bottom: 12px;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-20">
+<header class="sticky-header border-b border-[var(--border-light)]">
+<div class="px-4 py-3 flex items-center justify-between">
+<h1 class="text-lg font-bold">订单管理</h1>
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-[var(--text-secondary)]">notifications</span>
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-[var(--primary-brand)] text-sm">person</span>
+</div>
+</div>
+</div>
+<div class="px-4 pb-3">
+<div class="relative flex items-center bg-gray-100 rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-[var(--text-secondary)] text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full py-0" placeholder="搜索订单号或手机号" type="text"/>
+</div>
+</div>
+<div class="flex px-2">
+<button class="flex-1 py-3 text-sm font-medium tab-active">
+                待确认 <span class="text-xs ml-1 opacity-60">3</span>
+</button>
+<button class="flex-1 py-3 text-sm font-medium text-[var(--text-secondary)]">
+                制作中 <span class="text-xs ml-1 opacity-60">8</span>
+</button>
+<button class="flex-1 py-3 text-sm font-medium text-[var(--text-secondary)]">
+                待取餐 <span class="text-xs ml-1 opacity-60">5</span>
+</button>
+</div>
+</header>
+<main class="p-4 space-y-3">
+<div class="order-card ios-shadow overflow-hidden border border-[var(--border-light)]">
+<div class="p-4 border-b border-[var(--border-light)] flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-lg">#202603061</span>
+<span class="bg-orange-50 text-[var(--status-pending)] text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">新订单</span>
+</div>
+<span class="text-[12px] text-[var(--text-secondary)]">14:20</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-sm font-medium">冰美式</span>
+<span class="text-sm font-medium">x1</span>
+</div>
+<p class="text-[12px] text-[var(--text-secondary)]">大杯 / 无糖 / 少冰</p>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-sm font-medium">拿铁咖啡</span>
+<span class="text-sm font-medium">x2</span>
+</div>
+<p class="text-[12px] text-[var(--text-secondary)]">中杯 / 全糖 / 热</p>
+</div>
+</div>
+<div class="pt-2 border-t border-dashed border-[var(--border-light)] flex justify-between items-center">
+<span class="text-xs text-[var(--text-secondary)]">备注: 尽量快一点，谢谢</span>
+<span class="text-base font-bold text-[var(--primary-brand)]">¥76.00</span>
+</div>
+</div>
+<div class="p-4 bg-gray-50 flex space-x-3">
+<button class="flex-1 py-2.5 rounded-lg border border-[var(--border-light)] bg-white text-sm font-medium text-[var(--text-secondary)]">拒绝</button>
+<button class="flex-[2] py-2.5 rounded-lg bg-[var(--primary-brand)] text-white text-sm font-bold shadow-sm">确认接单</button>
+</div>
+</div>
+<div class="order-card ios-shadow overflow-hidden border border-[var(--border-light)] opacity-90">
+<div class="p-4 border-b border-[var(--border-light)] flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-lg">#202603058</span>
+<span class="bg-blue-50 text-[var(--status-progress)] text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">制作中</span>
+</div>
+<span class="text-[12px] text-[var(--text-secondary)]">14:15</span>
+</div>
+<div class="p-4 space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-sm font-bold">草莓芝士蛋糕</span>
+<span class="text-sm">x1</span>
+</div>
+<div class="flex items-center space-x-2 mt-1">
+<div class="h-1 flex-1 bg-[var(--status-progress)] rounded-full"></div>
+<div class="h-1 flex-1 bg-gray-200 rounded-full"></div>
+<span class="text-[10px] font-bold text-[var(--status-progress)]">步骤 1/2</span>
+</div>
+</div>
+<div class="pt-2 border-t border-dashed border-[var(--border-light)] flex justify-between items-center">
+<span class="text-xs text-[var(--text-secondary)]">预计剩余: 8分钟</span>
+<span class="text-base font-bold">¥42.00</span>
+</div>
+</div>
+<div class="p-4 bg-gray-50 flex space-x-3">
+<button class="flex-1 py-2.5 rounded-lg bg-blue-500 text-white text-sm font-bold">下一步 (封口)</button>
+</div>
+</div>
+<div class="order-card ios-shadow overflow-hidden border border-[var(--border-light)]">
+<div class="p-4 border-b border-[var(--border-light)] flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-lg">#202603055</span>
+<span class="bg-orange-50 text-[var(--status-pending)] text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">待确认</span>
+</div>
+<span class="text-[12px] text-[var(--text-secondary)]">14:10</span>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">手冲西达摩</span>
+<span class="text-sm">x1</span>
+</div>
+<div class="flex justify-between items-center text-[var(--primary-brand)]">
+<span class="text-xs font-medium">总额</span>
+<span class="text-lg font-black">¥38.00</span>
+</div>
+</div>
+<div class="p-4 bg-gray-50 flex space-x-3">
+<button class="flex-1 py-2.5 rounded-lg border border-[var(--border-light)] bg-white text-sm font-medium text-[var(--text-secondary)]">拒绝</button>
+<button class="flex-[2] py-2.5 rounded-lg bg-[var(--primary-brand)] text-white text-sm font-bold">确认接单</button>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-[var(--border-light)] flex justify-around items-center px-4 pb-6 pt-2 z-50">
+<button class="flex flex-col items-center space-y-1 text-[var(--primary-brand)]">
+<span class="material-symbols-outlined text-[24px]">assignment</span>
+<span class="text-[10px] font-medium">订单管理</span>
+</button>
+<button class="flex flex-col items-center space-y-1 text-[var(--text-secondary)]">
+<span class="material-symbols-outlined text-[24px]">inventory_2</span>
+<span class="text-[10px] font-medium">商品管理</span>
+</button>
+<button class="flex flex-col items-center space-y-1 text-[var(--text-secondary)]">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-[10px] font-medium">系统配置</span>
+</button>
+</nav>
+<div class="fixed bottom-24 right-4 flex flex-col space-y-3">
+<div class="w-12 h-12 rounded-full bg-white shadow-lg border border-[var(--border-light)] flex items-center justify-center relative">
+<span class="material-symbols-outlined text-gray-700">refresh</span>
+</div>
+<div class="w-12 h-12 rounded-full bg-[var(--primary-brand)] shadow-lg flex items-center justify-center relative">
+<span class="material-symbols-outlined text-white">print</span>
+</div>
+</div>
+
+</body></html>

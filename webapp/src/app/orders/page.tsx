@@ -222,7 +222,7 @@ export default function OrdersPage() {
           </div>
         ) : (
           /* 订单卡片列表 */
-          <div className="space-y-3">
+          <div className="space-y-3 sm:grid sm:grid-cols-2 sm:gap-3 sm:space-y-0">
             {orders.map((order) => {
               const items = parseItems(order.items)
               const summary = getItemsSummary(items)

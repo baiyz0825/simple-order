@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec7f13",
+              "background-light": "#f8f7f6",
+              "background-dark": "#221910",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto bg-background-light dark:bg-background-dark border-x border-slate-200 dark:border-slate-800">
+<!-- Header Section -->
+<div class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center p-4 justify-between">
+<div class="text-slate-900 dark:text-slate-100 flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-700/50 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<h1 class="text-lg font-bold flex-1 text-center pr-10">商品管理</h1>
+</div>
+<!-- Tabs Navigation -->
+<div class="px-4">
+<div class="flex border-b border-slate-200 dark:border-slate-700 justify-between">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-primary pb-3 pt-2 flex-1" href="#">
+<p class="text-sm font-bold">全部</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2 flex-1" href="#">
+<p class="text-sm font-medium">热销</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2 flex-1" href="#">
+<p class="text-sm font-medium">已下架</p>
+</a>
+</div>
+</div>
+<!-- Search Bar (Optional but useful for Admin) -->
+<div class="p-4">
+<div class="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0" placeholder="搜索商品名称..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Product List Scrollable Area -->
+<div class="flex-1 overflow-y-auto no-scrollbar pb-24">
+<div class="flex flex-col gap-3 p-4">
+<!-- Product Card 1 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0" data-alt="Classic pearl milk tea with ice" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjeAxlWlKg8pfGzhLcS9XqvdXHouY0kYmuBL76mYm1yS1E4Za7wAu7HJVPCYcw4BEDdpmf1dD3l4COOAy1vuBqoSmVkM2a3q3z8LXsA_yEq4DYxybQTedGXhtJij40DwZu4xyB1q3Tvhb7lqs8SZXDOYxoMLtVvzjw_fs1CxAX_4b0mcnLjgr48PibLx0MqI1ABlWzfPszwUJJ3PXU3kORZhEwpskjKhRmcxsUczF3IH2RG9b5EQZesBSF9obD69Efz8p09jw0m-5u");'></div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight line-clamp-1">经典招牌奶茶</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">库存: <span class="text-slate-700 dark:text-slate-200 font-medium">150</span></p>
+<p class="text-primary text-sm font-bold mt-0.5">¥ 18.00</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="flex px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium hover:bg-slate-200">
+                                编辑
+                            </button>
+<label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full border-none bg-primary p-0.5">
+<div class="h-full w-[20px] rounded-full bg-white ml-auto" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0" data-alt="Grape fruit tea with fresh grapes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDID5JEfWxij4lsiq4pA4sCJEYTZBiH1Fy6ZIfddCE7AH7Q1FbJLNwG5C4ONAWhCxyffVHS1LjThEulzIKiSJl73txJ1EOtzP6PnWDh-NF0WcsVcsQqidlDaX5bxBmiwEzo-I2td51nkiva6RDVUhKEYEMPWHORLjN4uka3jxR2Wv7OwuibxzfhSgPKLYH-3yYFHFsDsUNe_W7DwvcwheieZ2krpMr2EEhRWYKYmKaHtA3wVhY4l_o0T5DgHPvf_Wbj-B2gSFy871U7");'></div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight line-clamp-1">多肉葡萄果茶</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">库存: <span class="text-slate-700 dark:text-slate-200 font-medium">88</span></p>
+<p class="text-primary text-sm font-bold mt-0.5">¥ 25.00</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="flex px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                                编辑
+                            </button>
+<label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full border-none bg-primary p-0.5">
+<div class="h-full w-[20px] rounded-full bg-white ml-auto" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Product Card 3 (Unlisted/Disabled) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-800 opacity-75">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0 grayscale" data-alt="Cold brew coffee bottle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC65x80ldxSUWhegtEMv11PlUudEmrSH3Rad5QTCd-1ISKbat-18bDEUCbeaFHd6XDU_t9nzfMReVX2KxSpz6qIv_Vssc4Lq7_rZWd_pR2p0Y5XXOGaZQLo53a4135EIlIy2rM4inbLgRjga6fbTWba69DR4QIbsWfkwoauhWNY0MtNB9TrJDZTXJkz27a2vjQUYrTSSDUMASgZ3Qko9S99BYZschs3RtyscU2tI7YvZ_Gqu6e-vHGny6qtTEOi7lO14lXbEtQNqN5d");'></div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight line-clamp-1">美式咖啡</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">库存: <span class="text-slate-700 dark:text-slate-200 font-medium">0</span></p>
+<p class="text-primary text-sm font-bold mt-0.5">¥ 15.00</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="flex px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                                编辑
+                            </button>
+<label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-0.5">
+<div class="h-full w-[20px] rounded-full bg-white mr-auto" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+<input class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0" data-alt="Matcha latte with foam art" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDACr9fml52bR_SJEjidesyB5MVnVMFz1W8jVv8jkNuBAcdTmSbRZFxQbBNkQOgihJIOYNrIMUpg7DS16eVrslzf90uNH_76IeOK1R3zzyuzNRBoPKWhDULRuvnt_XuXimKiWK_9Z-6r2vPz-WNtu3-AMGeGp1bMLNNP5awJNc8Trh1h6KxfpLlBqaOyQVFFkVf2Qr0pQB9etrFG1c52bQYDNTviADfpRAkVPgHI2qRs877yjY-drL1a4oHMKSAgaFdIVGI9SF7jh2a");'></div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight line-clamp-1">手打抹茶拿铁</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">库存: <span class="text-slate-700 dark:text-slate-200 font-medium">45</span></p>
+<p class="text-primary text-sm font-bold mt-0.5">¥ 22.00</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="flex px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                                编辑
+                            </button>
+<label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full border-none bg-primary p-0.5">
+<div class="h-full w-[20px] rounded-full bg-white ml-auto" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-3 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0" data-alt="Orange passion fruit tea" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDh5m6l1jB7n-fZ0hrn3cYkE-iZGUFfrUNmcY0fmYs2E_4Sz2mLdHIOG3TN4fe3NLGZZ4yYLhQkoo1YHFk-cLrixEwzbhks8Cu7pz9y5BC-168Q-ffNfZF2Db3vUeTtdAdh9qyEn5uCEhszQAcor5to7RqnNKRIRzxXW_kOuNNQ5czN-GmkqDkzDCS9arkIWOQDaiW_a0F4Kc7x3e0k9Bc4-_Jx8bP769X4PEJzOw89AqOJBD0PvIC5Peko0z3guiBxdipms3j5iLWX");'></div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-tight line-clamp-1">满杯百香果</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">库存: <span class="text-slate-700 dark:text-slate-200 font-medium">200</span></p>
+<p class="text-primary text-sm font-bold mt-0.5">¥ 16.00</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<button class="flex px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium">
+                                编辑
+                            </button>
+<label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full border-none bg-primary p-0.5">
+<div class="h-full w-[20px] rounded-full bg-white ml-auto" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button Container -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-light dark:from-background-dark via-background-light/95 dark:via-background-dark/95 to-transparent">
+<button class="flex w-full items-center justify-center gap-2 h-14 bg-primary text-white rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform">
+<span class="material-symbols-outlined font-bold">add</span>
+<span class="text-base font-bold">添加新商品</span>
+</button>
+</div>
+</div>
+</body></html>

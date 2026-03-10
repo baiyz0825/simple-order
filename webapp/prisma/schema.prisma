@@ -9,11 +9,13 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
+  email     String?  @unique
+  phone     String?  @unique
   password  String
   name      String
-  role      String   @default("staff") // 'admin' | 'staff'
+  role      String   @default("customer") // 'admin' | 'staff' | 'customer'
   createdAt DateTime @default(now())
+  orders    Order[]
 }
 
 model Category {
@@ -57,10 +59,18 @@ model Product {
   updatedAt         DateTime @updatedAt
 }
 
+model ShopSetting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String @default("")
+}
+
 model Order {
   id            Int       @id @default(autoincrement())
   orderNo       String    @unique
   sessionId     String
+  userId        Int?
+  user          User?     @relation(fields: [userId], references: [id])
   items         String    // JSON: 订单商品详情
   totalPrice    Int       // 分
   status        String    @default("pending") // pending|confirmed|ready|completed|cancelled

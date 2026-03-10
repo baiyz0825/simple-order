@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#ec7f13",
+                "background-light": "#f8f7f6",
+                "background-dark": "#221910",
+              },
+              fontFamily: {
+                "display": ["Plus Jakarta Sans"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<title>Product Customization</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Background Mockup of the Menu -->
+<div class="relative min-h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark p-4">
+<header class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-bold text-lg">Central Plaza Store</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined">search</span>
+<span class="material-symbols-outlined">notifications</span>
+</div>
+</header>
+<div class="flex gap-4 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+<div class="bg-primary text-white px-4 py-2 rounded-full whitespace-nowrap">Coffee Series</div>
+<div class="bg-primary/10 dark:bg-primary/20 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-full whitespace-nowrap">Fresh Tea</div>
+<div class="bg-primary/10 dark:bg-primary/20 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-full whitespace-nowrap">Fruit Mix</div>
+<div class="bg-primary/10 dark:bg-primary/20 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-full whitespace-nowrap">Pastry</div>
+</div>
+<div class="grid grid-cols-1 gap-4 opacity-40">
+<div class="flex gap-4 p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
+<div class="w-24 h-24 bg-slate-200 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of a latte with foam art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB94Me38JiBX2FXTcUUHw5GfcLq2OF-XYvlnONuZFha6Ui7VRlhjyriqq8z3B205snRZ-5LX-4x689HnyRgeJWYq0jQmvDWVckhSBQCfQx9Zo2oDyWyhhYOLB3-yjlOOACixCsCllhFLbcxKgDqY0NvOr9TRbLZNWRVd3wjZkn4iotjFMftea394VCbD6Pe2RCI9Swe1CWze6SBSi019g3iCMVav6TJM8D_FtRmxDNVQ3LB2PVQGIPGvHkcDEmQCDAIndV9zjQ89XJ_"/>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-lg">Signature Latte</h3>
+<p class="text-sm text-slate-500 line-clamp-2">Rich espresso with steamed velvety milk.</p>
+<div class="mt-2 flex justify-between items-center">
+<span class="font-bold text-primary">$4.50</span>
+<div class="bg-primary h-8 w-8 rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dimmed Overlay -->
+<div class="fixed inset-0 bg-slate-900/60 z-40"></div>
+<!-- Bottom Sheet Popup -->
+<div class="fixed inset-x-0 bottom-0 z-50 flex flex-col h-[85vh] bg-background-light dark:bg-background-dark rounded-t-3xl shadow-2xl overflow-hidden">
+<!-- Handle -->
+<div class="flex items-center justify-center h-8 flex-shrink-0">
+<div class="w-12 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto pb-32">
+<!-- Product Hero -->
+<div class="px-4">
+<div class="w-full h-64 bg-slate-200 rounded-2xl overflow-hidden relative shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Delicious caramel latte with whipped cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-U-cHfjxiVfYL9V40BEOY72prihVZ5nH0MvAxesCBUBSFMyGOb1BqjH8Ty3wOSURXFb6fAen3TMzF6ZvJ0jaO5PLcRTRfUeUCmr78ubgFFxJOw_Rq910qtc02y8wWCdZvTRBTf6VbWsjj6YxtvoPe1kLotyN28fs1S-r-YspEhKzJtEFTVHg3JMQXbM5eT_Vw3ltEWJkjxu3hte-Tct01W4M9EKbMx9ifX_aUf_z9R93J3IABsFEpshijd_hmkqN23hkP5btyhgZZ"/>
+<button class="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full">
+<span class="material-symbols-outlined text-white">close</span>
+</button>
+</div>
+</div>
+<!-- Product Info -->
+<div class="px-5 pt-6">
+<div class="flex justify-between items-start">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Signature Caramel Latte</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                                Our signature espresso blended with sweet caramel syrup and steamed milk, topped with a light caramel drizzle.
+                            </p>
+</div>
+</div>
+</div>
+<div class="h-px bg-primary/10 mx-5 my-6"></div>
+<!-- Customization Options -->
+<div class="px-5 space-y-8">
+<!-- Sweetness Section -->
+<section>
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+                            Sweetness Level <span class="text-xs font-normal text-slate-400">(Select one)</span>
+</h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="py-3 px-2 rounded-xl border-2 border-primary bg-primary/5 text-primary font-semibold text-sm">
+                                100% Full
+                            </button>
+<button class="py-3 px-2 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium text-sm">
+                                50% Half
+                            </button>
+<button class="py-3 px-2 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium text-sm">
+                                0% No Sugar
+                            </button>
+</div>
+</section>
+<!-- Temperature/Ice Section -->
+<section>
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+                            Ice Level <span class="text-xs font-normal text-slate-400">(Select one)</span>
+</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="py-3 px-2 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">ac_unit</span>
+                                Regular Ice
+                            </button>
+<button class="py-3 px-2 rounded-xl border-2 border-primary bg-primary/5 text-primary font-semibold text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">block</span>
+                                No Ice
+                            </button>
+</div>
+</section>
+<!-- Milk Options -->
+<section>
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+                            Milk Choice <span class="text-xs font-normal text-slate-400">+$0.50</span>
+</h3>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm">
+                                Oat Milk
+                            </button>
+<button class="px-6 py-2 rounded-full border-2 border-primary bg-primary text-white text-sm font-semibold">
+                                Regular Milk
+                            </button>
+<button class="px-6 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm">
+                                Soy Milk
+                            </button>
+</div>
+</section>
+</div>
+</div>
+<!-- Sticky Bottom Bar -->
+<div class="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700 p-5 pb-8 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full p-1 border border-slate-200 dark:border-slate-700">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<span class="px-3 font-bold text-lg">1</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white shadow-md">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white flex-1 ml-6 h-12 rounded-xl flex items-center justify-between px-6 shadow-lg shadow-primary/20 transition-all active:scale-95">
+<span class="font-bold">Add to Cart</span>
+<span class="font-bold text-lg">$5.00</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

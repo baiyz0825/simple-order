@@ -1,4 +1,33 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+
+interface ShopSettings {
+  shopName: string
+  shopSubtitle: string
+  aboutText: string
+  businessHours: string
+  address: string
+  contactInfo: string
+}
+
 export default function AboutPage() {
+  const [settings, setSettings] = useState<ShopSettings | null>(null)
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then(setSettings)
+      .catch(console.error)
+  }, [])
+
+  const shopName = settings?.shopName || '精品咖啡烘焙店'
+  const aboutText =
+    settings?.aboutText ||
+    '我们是一家专注于精品咖啡的烘焙店，精选来自世界各地的优质咖啡豆，采用专业烘焙工艺，为您带来每一杯都值得细细品味的好咖啡。'
+  const businessHours = settings?.businessHours || '每日 08:00 - 22:00'
+  const address = settings?.address || '请到店咨询'
+
   return (
     <div className="min-h-screen bg-ios-bg pb-20">
       {/* Header */}
@@ -22,7 +51,7 @@ export default function AboutPage() {
           </svg>
         </div>
         <h1 className="text-xl font-semibold text-text-main">
-          精品咖啡烘焙店
+          {shopName}
         </h1>
         <p className="mt-1 text-sm text-text-secondary">v1.0.0</p>
       </div>
@@ -32,7 +61,7 @@ export default function AboutPage() {
         <div className="rounded-xl bg-white p-4">
           <h2 className="mb-2 text-sm font-medium text-text-main">关于我们</h2>
           <p className="text-sm leading-relaxed text-text-secondary">
-            我们是一家专注于精品咖啡的烘焙店，精选来自世界各地的优质咖啡豆，采用专业烘焙工艺，为您带来每一杯都值得细细品味的好咖啡。
+            {aboutText}
           </p>
         </div>
 
@@ -46,8 +75,9 @@ export default function AboutPage() {
         <div className="rounded-xl bg-white p-4">
           <h2 className="mb-2 text-sm font-medium text-text-main">联系方式</h2>
           <div className="space-y-2 text-sm text-text-secondary">
-            <p>营业时间：每日 08:00 - 22:00</p>
-            <p>地址：请到店咨询</p>
+            <p>营业时间：{businessHours}</p>
+            <p>地址：{address}</p>
+            {settings?.contactInfo && <p>联系方式：{settings.contactInfo}</p>}
           </div>
         </div>
       </div>

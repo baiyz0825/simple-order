@@ -15,16 +15,45 @@ export function middleware(request: NextRequest) {
     })
   }
 
-  // 管理端页面鉴权（排除登录/注册页）
   const { pathname } = request.nextUrl
-  if (
-    pathname.startsWith('/admin') &&
-    !pathname.startsWith('/admin/login') &&
-    !pathname.startsWith('/admin/register')
-  ) {
-    const adminToken = request.cookies.get('admin_token')?.value
+  const userToken = request.cookies.get('user_token')?.value
+  const adminToken = request.cookies.get('admin_token')?.value
+
+  // 已登录顾客访问登录页 → 跳转到首页或 redirect 参数指定的页面
+  if (pathname === '/login') {
+    if (userToken) {
+      const redirectTo = request.nextUrl.searchParams.get('redirect') || '/'
+      return NextResponse.redirect(new URL(redirectTo, request.url))
+    }
+    return response
+  }
+
+  // 已登录管理员访问管理登录/注册页 → 跳转到管理后台
+  if (pathname === '/admin/login' || pathname === '/admin/register') {
+    if (adminToken) {
+      return NextResponse.redirect(new URL('/admin', request.url))
+    }
+    return response
+  }
+
+  // 管理端页面鉴权
+  if (pathname.startsWith('/admin')) {
     if (!adminToken) {
       return NextResponse.redirect(new URL('/admin/login', request.url))
+    }
+  }
+
+  // C端需要登录的页面
+  const customerAuthPaths = ['/orders', '/profile', '/order/confirm', '/order/']
+  const needsAuth = customerAuthPaths.some((p) =>
+    p.endsWith('/') ? pathname.startsWith(p) : pathname === p || pathname.startsWith(p + '/')
+  )
+
+  if (needsAuth) {
+    if (!userToken) {
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('redirect', pathname)
+      return NextResponse.redirect(loginUrl)
     }
   }
 

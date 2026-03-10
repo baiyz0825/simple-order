@@ -42,9 +42,9 @@ export default function ProductCard({
   }
 
   return (
-    <div className="flex gap-3 bg-white p-3">
+    <div className="flex gap-3 border-b border-border-color/30 bg-white px-3 py-3">
       {/* 商品图片 */}
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gray-100">
+      <div className="relative h-[80px] w-[80px] shrink-0 overflow-hidden rounded-lg bg-gray-100">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
@@ -54,17 +54,8 @@ export default function ProductCard({
             sizes="80px"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-2xl text-text-light">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+          <div className="flex h-full w-full items-center justify-center rounded-lg bg-gradient-to-br from-orange-50 to-amber-100">
+            <span className="text-3xl">☕</span>
           </div>
         )}
       </div>
@@ -72,11 +63,11 @@ export default function ProductCard({
       {/* 商品信息 */}
       <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
         <div>
-          <h3 className="text-[15px] font-semibold leading-snug text-text-main">
+          <h3 className="text-[15px] font-bold leading-snug text-text-main">
             {product.name}
           </h3>
           {product.description && (
-            <p className="mt-0.5 truncate text-xs text-text-secondary">
+            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-text-secondary">
               {product.description}
             </p>
           )}
@@ -84,8 +75,8 @@ export default function ProductCard({
 
         <div className="flex items-end justify-between">
           <div className="flex items-baseline gap-0.5">
-            <span className="text-xs text-primary">&#xA5;</span>
-            <span className="text-[17px] font-bold leading-none text-primary">
+            <span className="text-xs font-semibold text-text-main">&#xA5;</span>
+            <span className="text-[18px] font-bold leading-none text-text-main">
               {priceYuan}
             </span>
           </div>

@@ -15,9 +15,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '邮箱已被注册' }, { status: 400 })
     }
 
-    // 第一个注册用户自动成为超级管理员
-    const userCount = await prisma.user.count()
-    const role = userCount === 0 ? 'admin' : 'staff'
+    // 第一个管理员注册自动成为超级管理员
+    const adminCount = await prisma.user.count({ where: { role: { in: ['admin', 'staff'] } } })
+    const role = adminCount === 0 ? 'admin' : 'staff'
 
     const hashedPassword = await hashPassword(password)
     const user = await prisma.user.create({

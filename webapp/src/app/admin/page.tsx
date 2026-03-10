@@ -146,7 +146,7 @@ function EstimatedTimeModal({
   if (!visible) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
       <div className="mx-6 w-full max-w-sm rounded-2xl bg-white p-6">
         <h3 className="text-center text-lg font-semibold text-text-main">
           设置预计制作时间

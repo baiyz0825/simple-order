@@ -5,8 +5,27 @@ import { usePathname } from 'next/navigation'
 
 const tabs = [
   {
-    label: '点单',
+    label: '首页',
     href: '/',
+    icon: (active: boolean) => (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={active ? '#FF8D4D' : '#8E8E93'}
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+  },
+  {
+    label: '点单',
+    href: '/menu',
     icon: (active: boolean) => (
       <svg
         width="24"
@@ -48,8 +67,8 @@ const tabs = [
     ),
   },
   {
-    label: '关于',
-    href: '/about',
+    label: '我的',
+    href: '/profile',
     icon: (active: boolean) => (
       <svg
         width="24"
@@ -61,16 +80,15 @@ const tabs = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="16" x2="12" y2="12" />
-        <line x1="12" y1="8" x2="12.01" y2="8" />
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
       </svg>
     ),
   },
 ]
 
 /** 隐藏底部导航的路径前缀 */
-const HIDDEN_PREFIXES = ['/admin', '/order/confirm']
+const HIDDEN_PREFIXES = ['/admin', '/order/confirm', '/login']
 /** 隐藏底部导航的动态路由匹配（/order/:id） */
 const HIDDEN_PATTERN = /^\/order\/[^/]+$/
 
@@ -85,8 +103,8 @@ export default function BottomNav() {
   if (shouldHide) return null
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-color bg-white pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto flex max-w-lg items-center justify-around">
+    <nav className="fixed-bar bottom-0 z-50 border-t border-border-color bg-white pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto flex items-center justify-around">
         {tabs.map((tab) => {
           const isActive =
             tab.href === '/'

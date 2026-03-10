@@ -16,6 +16,35 @@
   --color-foreground: #1C1C1E;
 }
 
+/* ===== 全局 CSS 变量：应用容器最大宽度 ===== */
+:root {
+  --app-max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --app-max-width: 480px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --app-max-width: 560px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --app-max-width: 640px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --app-max-width: 720px;
+  }
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -41,4 +70,40 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ===== 响应式：大屏幕居中容器 ===== */
+
+/* Pad/Desktop 时 body 背景改为浅灰，让中间内容区有层次感 */
+@media (min-width: 640px) {
+  body {
+    background: #E8E8ED;
+  }
+}
+
+/* 应用容器 - 大屏时居中限宽 */
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  background: var(--color-background);
+}
+
+@media (min-width: 640px) {
+  .app-shell {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+    border-left: 1px solid #E5E5EA;
+    border-right: 1px solid #E5E5EA;
+  }
+}
+
+/* ===== fixed 定位元素统一约束在 app-shell 内 ===== */
+.fixed-bar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--app-max-width);
 }

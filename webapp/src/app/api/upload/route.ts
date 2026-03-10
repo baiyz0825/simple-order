@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
+import { requireAdmin } from '@/lib/admin-guard'
 
 export async function POST(request: NextRequest) {
+  const { error } = await requireAdmin()
+  if (error) return error
+
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File | null

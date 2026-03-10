@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Menu and Ordering Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary-orange: #FF8D4D;
+            --ios-bg: #F2F2F7;
+            --text-main: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --safe-area-bottom: env(safe-area-inset-bottom);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background-color: #FFFFFF;
+            color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .category-item.active {
+            background-color: #FFFFFF;
+            color: var(--primary-orange);
+            font-weight: 600;
+        }
+        .category-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            height: 50%;
+            width: 4px;
+            background-color: var(--primary-orange);
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col h-screen overflow-hidden">
+<header class="px-5 pt-12 pb-4 bg-white shrink-0">
+<div class="flex justify-between items-end">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">精品咖啡烘焙店</h1>
+<p class="text-xs text-[var(--text-secondary)] mt-1 flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">location_on</span>
+                    距离您 280m | 专注手冲与手工烘焙
+                </p>
+</div>
+<div class="bg-[var(--ios-bg)] px-3 py-1.5 rounded-full flex items-center space-x-1">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span class="text-xs font-medium">通知</span>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden border-t border-gray-100">
+<nav class="w-24 bg-[#F8F8F8] overflow-y-auto hide-scrollbar shrink-0">
+<div class="flex flex-col">
+<button class="category-item active relative py-5 px-3 text-sm text-center">
+                    人气推荐
+                </button>
+<button class="category-item relative py-5 px-3 text-sm text-center text-[var(--text-secondary)]">
+                    咖啡系列
+                </button>
+<button class="category-item relative py-5 px-3 text-sm text-center text-[var(--text-secondary)]">
+                    季节限定
+                </button>
+<button class="category-item relative py-5 px-3 text-sm text-center text-[var(--text-secondary)]">
+                    现烤烘焙
+                </button>
+<button class="category-item relative py-5 px-3 text-sm text-center text-[var(--text-secondary)]">
+                    精致甜点
+                </button>
+<button class="category-item relative py-5 px-3 text-sm text-center text-[var(--text-secondary)]">
+                    周边商品
+                </button>
+</div>
+</nav>
+<section class="flex-1 overflow-y-auto bg-white px-4 pb-32">
+<div class="sticky top-0 bg-white/95 backdrop-blur-sm py-3 z-10 mb-2">
+<h2 class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">人气推荐</h2>
+</div>
+<div class="space-y-6">
+<div class="flex space-x-3">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+<img alt="Iced Americano" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB0H-1R3Nvc5mH72RFI4rlUoaSbzaoigcXIXXi0KD5a1E9WJlclXn6DxuQDpc9zNcH5oC2uT8sgkzf13fOzDFVxLrGXZLxq8aJjPf_0i43E8ELN8gMJyts6mnhIVkyAES0bjfKoRfXGHc4PaQlelDqP8MTcjm9u4cS0hG5cGx1WpVqRYNED6K_0ce-CwwvJ_7lbvCIf_mw_Ta7dogGTSohGBOzYsmQfP196NgnJfQ9bFea-IqHOAd-FR6xTivLWEhMJj9xYzrkLVdT"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-base leading-tight">冰美式</h3>
+<p class="text-[var(--text-secondary)] text-xs mt-1 line-clamp-2">精选日晒豆，中深烘焙，口感纯净，自带果酸余韵。</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-lg font-bold text-[var(--text-main)]">¥18</span>
+<button class="bg-[var(--primary-orange)] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+<img alt="Oat Latte" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLBm5ozuDuhmgImQ3wF4CTwPFP0Y856ztSeUtygE9p8RyaMkEGvuwJt_-umPh_949m162rktvSsVuUiR9Hmt2JVsG7JQ2PccoNfntTCuE4SiiDqz_v47HwKw-P_ZHMWcEk7AXBPHkJT6gMTsjWiPwboyD7UV48EaY8qZ3cQUeQ4sEdBn5UTIN_StbhFugN9GxucG9bc4OFjcLsGvHH_X0EJl_bY2UxXd663N3OZRyHJRZIVtdoIyh9MkNdsZYR1tnvIsTxDhswX_lF"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-base leading-tight">燕麦拿铁</h3>
+<p class="text-[var(--text-secondary)] text-xs mt-1 line-clamp-2">经典燕麦奶配比，麦香浓郁，乳糖不耐受友好。</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-lg font-bold text-[var(--text-main)]">¥28</span>
+<button class="bg-[var(--primary-orange)] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+<img alt="Croissant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7bJM446QpoGKPaFozAdlb-RZylJNGrRK2GWGP5ZLtoDmFSzEw48uVZiaXAAch41svp2X3ox4P-YnTjJV0QbTtNXruPrNJhY3g_yz_cIXG_BEgSVX4Ss5m_3na9jIvx48onCPodNOKuMhKoXjSscyqGHw4HY-KWxhd0g8Gt_1SmMRMwxpjoMN2k9fBG5_SKJdtyL_RoX_nShvNnJm5r9_A16ejMhzwWs6WTNtEL8MsPmLvt6eDOF_5wVkCRubvkdT47bi7ddgaeJbp"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-base leading-tight">法式原味可颂</h3>
+<p class="text-[var(--text-secondary)] text-xs mt-1 line-clamp-2">传统开酥工艺，外皮金黄酥脆，内里蜂窝组织完美。</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-lg font-bold text-[var(--text-main)]">¥16</span>
+<button class="bg-[var(--primary-orange)] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+<img alt="Specialty Coffee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwNr07oCTbB-A1690yVrIXt0EH_coJj_1S4QeJq5gxlegoyOHNW982t59l6q8pVCnALjc2Qn_b-OhSff0Ct8sO17ljFTrlEJS-gCCEGIHkPQYpdSTaee-iONZaikU9pUT5vI95CqgJeSo3w01ZquQTCAh1M7FkLLu9_YIU2rExLhbcwQQSfeBktlOxesG476WeM9YJU1cEK163beFfvz5sU13ivkQcHuCkJpjGovRXOid23H7_BdpWUqbUImhRa2WQR2eYtMuB3lPs"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-base leading-tight">手冲瑰夏</h3>
+<p class="text-[var(--text-secondary)] text-xs mt-1 line-clamp-2">巴拿马翡翠庄园，优雅的花香与柑橘调性。</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-lg font-bold text-[var(--text-main)]">¥58</span>
+<button class="bg-[var(--primary-orange)] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+<img alt="Muffin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84UxuTWa6-d8LVj0wgLAqHHBG4po4Di53M1y6RpNhEPiBJpHvtbfRmI62Po6lf2tzcTDhxL3ZU8gJvAuci63dPJWrdSAMo27HCxAISUKeA4LzlUIvBWramwwXdmWk7w0vA3yGiZ93LZZ_suUnlAvfOFuKV-NJjzcV3X704QOoBI4eWiUafBJiNUFcTNCWPBGvUa3YlsH4O2L5WxPGZXIoQ1xrHh3l88OtrLieZKnN2T4KmxXg4FgBwY7qEr9kqqdsEXPH3nyOXz_4"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-base leading-tight">蓝莓爆浆马芬</h3>
+<p class="text-[var(--text-secondary)] text-xs mt-1 line-clamp-2">每日新鲜制作，选用当季新鲜大粒蓝莓。</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-lg font-bold text-[var(--text-main)]">¥15</span>
+<button class="bg-[var(--primary-orange)] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 right-0 px-4 pb-[calc(var(--safe-area-bottom)+16px)] pt-4 z-50 pointer-events-none">
+<div class="bg-[#1C1C1E]/95 backdrop-blur-md rounded-full h-14 flex items-center justify-between pl-2 pr-2 shadow-xl pointer-events-auto">
+<div class="flex items-center">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">shopping_bag</span>
+<span class="absolute top-1.5 right-1.5 bg-[var(--primary-orange)] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-[#1C1C1E]">2</span>
+</div>
+<div class="ml-2">
+<div class="flex items-baseline space-x-1">
+<span class="text-white font-bold text-lg leading-none">¥34</span>
+<span class="text-gray-400 text-[10px] line-through">¥40</span>
+</div>
+<p class="text-[10px] text-gray-400">预估 15 分钟后可取</p>
+</div>
+</div>
+<button class="bg-[var(--primary-orange)] text-white px-6 h-10 rounded-full font-bold text-sm">
+                去结算
+            </button>
+</div>
+</div>
+<div class="bg-white border-t border-gray-100 flex justify-around items-center pt-2 pb-[var(--safe-area-bottom)] relative z-40 shrink-0">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--primary-orange)]">restaurant_menu</span>
+<span class="text-[10px] mt-1 text-[var(--primary-orange)] font-medium">点单</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--text-secondary)]">assignment</span>
+<span class="text-[10px] mt-1 text-[var(--text-secondary)]">订单</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-[var(--text-secondary)]">person</span>
+<span class="text-[10px] mt-1 text-[var(--text-secondary)]">我的</span>
+</div>
+</div>
+
+</body></html>

@@ -1,170 +1,48 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { useCart } from '@/lib/cart'
-import CategoryNav from '@/components/CategoryNav'
-import ProductCard from '@/components/ProductCard'
-import type { ProductInfo } from '@/components/ProductCard'
-import ProductDetailModal from '@/components/ProductDetailModal'
-import CartBar from '@/components/CartBar'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
-// ─── API 数据类型 ───────────────────────────────────────────────
-
-interface MenuCategory {
-  id: number
-  name: string
-  sort: number
-  products: MenuProduct[]
+interface ShopSettings {
+  shopName: string
+  shopSubtitle: string
+  aboutText: string
+  businessHours: string
+  address: string
+  contactInfo: string
+  homeWelcomeText: string
+  homeAnnouncementText: string
+  homeBannerUrl: string
 }
 
-interface MenuProduct {
+interface PopularProduct {
   id: number
   name: string
   description: string | null
   price: number
   imageUrl: string | null
-  sort: number
-  resolvedSpecs: {
-    templateId: number
-    templateName: string
-    type: string
-    required: boolean
-    options: { name: string; priceDelta: number }[]
-  }[]
+  salesCount: number
 }
 
-// ─── 主页面组件 ──────────────────────────────────────────────────
-
 export default function HomePage() {
-  const { addToCart } = useCart()
-
-  const [categories, setCategories] = useState<MenuCategory[]>([])
-  const [activeCategory, setActiveCategory] = useState<number>(0)
+  const router = useRouter()
+  const [settings, setSettings] = useState<ShopSettings | null>(null)
+  const [popular, setPopular] = useState<PopularProduct[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  // 商品规格弹窗
-  const [detailProduct, setDetailProduct] = useState<ProductInfo | null>(null)
-  const [detailVisible, setDetailVisible] = useState(false)
-
-  // 分类区域 ref，用于滚动定位
-  const sectionRefs = useRef<Map<number, HTMLDivElement>>(new Map())
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const isClickScrolling = useRef(false)
-
-  // ─── 加载菜单数据 ──────────────────────────────────────────────
 
   useEffect(() => {
-    async function fetchMenu() {
-      try {
-        setLoading(true)
-        const res = await fetch('/api/menu')
-        if (!res.ok) throw new Error('获取菜单失败')
-        const data = await res.json()
-        setCategories(data.categories || [])
-        if (data.categories?.length > 0) {
-          setActiveCategory(data.categories[0].id)
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : '网络错误')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchMenu()
-  }, [])
-
-  // ─── 滚动监听：更新当前分类高亮 ────────────────────────────────
-
-  const handleScroll = useCallback(() => {
-    if (isClickScrolling.current) return
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    const scrollTop = container.scrollTop
-    let currentId = activeCategory
-
-    for (const [catId, el] of sectionRefs.current.entries()) {
-      if (el.offsetTop - container.offsetTop <= scrollTop + 10) {
-        currentId = catId
-      }
-    }
-
-    if (currentId !== activeCategory) {
-      setActiveCategory(currentId)
-    }
-  }, [activeCategory])
-
-  useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
-    container.addEventListener('scroll', handleScroll, { passive: true })
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
-
-  // ─── 点击分类滚动 ──────────────────────────────────────────────
-
-  const handleCategoryClick = (categoryId: number) => {
-    setActiveCategory(categoryId)
-    const section = sectionRefs.current.get(categoryId)
-    const container = scrollContainerRef.current
-    if (section && container) {
-      isClickScrolling.current = true
-      container.scrollTo({
-        top: section.offsetTop - container.offsetTop,
-        behavior: 'smooth',
+    Promise.all([
+      fetch('/api/settings').then((r) => r.json()),
+      fetch('/api/popular?limit=8').then((r) => r.json()),
+    ])
+      .then(([settingsData, popularData]) => {
+        setSettings(settingsData)
+        setPopular(Array.isArray(popularData) ? popularData : [])
       })
-      // 滚动结束后恢复监听
-      setTimeout(() => {
-        isClickScrolling.current = false
-      }, 500)
-    }
-  }
-
-  // ─── 直接加入购物车（无规格商品）─────────────────────────────────
-
-  const handleDirectAdd = (product: ProductInfo) => {
-    addToCart({
-      productId: product.id,
-      productName: product.name,
-      imageUrl: product.imageUrl || '',
-      price: product.price,
-      quantity: 1,
-      selectedSpecs: [],
-    })
-  }
-
-  // ─── 打开规格弹窗 ─────────────────────────────────────────────
-
-  const handleOpenDetail = (product: ProductInfo) => {
-    setDetailProduct(product)
-    setDetailVisible(true)
-  }
-
-  // ─── 从规格弹窗加入购物车 ──────────────────────────────────────
-
-  const handleAddFromModal = (
-    product: ProductInfo,
-    quantity: number,
-    selectedSpecs: {
-      templateId: number
-      templateName: string
-      type: string
-      selected: string[]
-    }[],
-    unitPrice: number
-  ) => {
-    addToCart({
-      productId: product.id,
-      productName: product.name,
-      imageUrl: product.imageUrl || '',
-      price: unitPrice,
-      quantity,
-      selectedSpecs,
-    })
-  }
-
-  // ─── 加载状态 ──────────────────────────────────────────────────
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
 
   if (loading) {
     return (
@@ -177,101 +55,291 @@ export default function HomePage() {
     )
   }
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ios-bg px-6">
-        <div className="text-4xl">&#x26A0;&#xFE0F;</div>
-        <p className="text-center text-text-secondary">{error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="rounded-full bg-primary px-6 py-2 text-sm text-white"
-        >
-          重试
-        </button>
-      </div>
-    )
-  }
-
-  // ─── 渲染 ──────────────────────────────────────────────────────
+  const shopName = settings?.shopName || '精品咖啡烘焙店'
+  const shopSubtitle = settings?.shopSubtitle || '专注手冲与手工烘焙'
+  const welcomeText = settings?.homeWelcomeText || '欢迎光临，开启美好的一天'
+  const announcement = settings?.homeAnnouncementText || ''
+  const bannerUrl = settings?.homeBannerUrl || ''
 
   return (
-    <div className="flex min-h-screen flex-col bg-ios-bg">
-      {/* 顶部标题区 */}
-      <header className="bg-white px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-        <h1 className="text-xl font-bold text-text-main">精品咖啡烘焙店</h1>
-        <p className="mt-0.5 text-sm text-text-secondary">
-          专注手冲与手工烘焙
-        </p>
-      </header>
+    <div className="min-h-screen bg-ios-bg pb-24">
+      {/* Hero 区域 */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary/90 to-orange-400 px-5 pb-8 pt-[max(3rem,env(safe-area-inset-top))]">
+        {/* 背景装饰 */}
+        <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
+        <div className="absolute -bottom-6 -left-6 h-28 w-28 rounded-full bg-white/10" />
 
-      {/* 主体区域：分类导航 + 商品列表 */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* 左侧分类导航 */}
-        <CategoryNav
-          categories={categories.map((c) => ({ id: c.id, name: c.name }))}
-          activeCategory={activeCategory}
-          onCategoryClick={handleCategoryClick}
-        />
+        {/* Banner 图片 */}
+        {bannerUrl && (
+          <div className="relative mb-4 h-40 w-full overflow-hidden rounded-2xl">
+            <Image
+              src={bannerUrl}
+              alt="banner"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+        )}
 
-        {/* 右侧商品列表 */}
-        <div
-          ref={scrollContainerRef}
-          className="flex-1 overflow-y-auto bg-ios-bg pb-20 scrollbar-hide"
-        >
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              ref={(el) => {
-                if (el) sectionRefs.current.set(cat.id, el)
-              }}
+        <div className="relative z-10">
+          {/* 店铺 Logo */}
+          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              {/* 分类标题 */}
-              <div className="sticky top-0 z-10 bg-ios-bg px-3 py-2">
-                <h2 className="text-[13px] font-semibold text-text-secondary">
-                  {cat.name}
-                </h2>
-              </div>
+              <path d="M17 8h1a4 4 0 0 1 0 8h-1" />
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8Z" />
+              <line x1="6" y1="2" x2="6" y2="4" />
+              <line x1="10" y1="2" x2="10" y2="4" />
+              <line x1="14" y1="2" x2="14" y2="4" />
+            </svg>
+          </div>
 
-              {/* 商品卡片列表 */}
-              <div className="space-y-px">
-                {cat.products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={{
-                      id: product.id,
-                      name: product.name,
-                      description: product.description,
-                      price: product.price,
-                      imageUrl: product.imageUrl,
-                      resolvedSpecs: product.resolvedSpecs,
-                    }}
-                    onAdd={handleDirectAdd}
-                    onDetail={handleOpenDetail}
-                  />
-                ))}
-              </div>
-
-              {/* 没有商品的分类 */}
-              {cat.products.length === 0 && (
-                <div className="py-8 text-center text-sm text-text-light">
-                  暂无商品
-                </div>
-              )}
-            </div>
-          ))}
+          <h1 className="text-2xl font-bold text-white">{shopName}</h1>
+          <p className="mt-1 text-sm text-white/80">{shopSubtitle}</p>
+          <p className="mt-3 text-[13px] leading-relaxed text-white/70">{welcomeText}</p>
         </div>
       </div>
 
-      {/* 商品规格弹窗 */}
-      <ProductDetailModal
-        product={detailProduct}
-        visible={detailVisible}
-        onClose={() => setDetailVisible(false)}
-        onAddToCart={handleAddFromModal}
-      />
+      {/* 公告栏 */}
+      {announcement && (
+        <div className="mx-4 -mt-4 relative z-10 flex items-center gap-2 rounded-xl bg-white px-4 py-3 shadow-sm">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#FF8D4D"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21.73 18l-8-14a2 2 0 00-3.48 0l-8 14A2 2 0 004.27 21h15.46A2 2 0 0021.73 18z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <p className="flex-1 text-sm text-text-secondary">{announcement}</p>
+        </div>
+      )}
 
-      {/* 底部购物车浮层 */}
-      <CartBar />
+      {/* 快捷操作 */}
+      <div className={`mx-4 grid grid-cols-2 gap-3 sm:grid-cols-2 ${announcement ? 'mt-4' : '-mt-4 relative z-10'}`}>
+        <button
+          onClick={() => router.push('/menu')}
+          className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm active:scale-[0.98] transition-transform"
+        >
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#FF8D4D"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M17 8h1a4 4 0 0 1 0 8h-1" />
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8Z" />
+              <line x1="6" y1="2" x2="6" y2="4" />
+              <line x1="10" y1="2" x2="10" y2="4" />
+              <line x1="14" y1="2" x2="14" y2="4" />
+            </svg>
+          </div>
+          <div className="text-left">
+            <p className="text-[15px] font-semibold text-text-main">开始点单</p>
+            <p className="mt-0.5 text-xs text-text-secondary">浏览完整菜单</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => router.push('/orders')}
+          className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm active:scale-[0.98] transition-transform"
+        >
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#3B82F6"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+              <path d="M14 2v6h6" />
+              <line x1="8" y1="13" x2="16" y2="13" />
+              <line x1="8" y1="17" x2="13" y2="17" />
+            </svg>
+          </div>
+          <div className="text-left">
+            <p className="text-[15px] font-semibold text-text-main">我的订单</p>
+            <p className="mt-0.5 text-xs text-text-secondary">查看订单状态</p>
+          </div>
+        </button>
+      </div>
+
+      {/* 推荐商品 */}
+      {popular.length > 0 && (
+        <div className="mt-6 px-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-bold text-text-main">人气推荐</h2>
+            <button
+              onClick={() => router.push('/menu')}
+              className="text-sm text-primary"
+            >
+              查看全部
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {popular.map((product) => {
+              const priceYuan = (product.price / 100).toFixed(
+                product.price % 100 === 0 ? 0 : 2
+              )
+              return (
+                <div
+                  key={product.id}
+                  onClick={() => router.push('/menu')}
+                  className="cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm active:scale-[0.98] transition-transform"
+                >
+                  {/* 商品图片 */}
+                  <div className="relative aspect-square bg-gray-50">
+                    {product.imageUrl ? (
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="50vw"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100">
+                        <span className="text-4xl">☕</span>
+                      </div>
+                    )}
+                    {/* 销量角标 */}
+                    {product.salesCount > 0 && (
+                      <div className="absolute left-0 top-0 rounded-br-xl bg-primary/90 px-2 py-0.5">
+                        <span className="text-[10px] font-medium text-white">
+                          {product.salesCount >= 100
+                            ? `${Math.floor(product.salesCount / 10) * 10}+已售`
+                            : `${product.salesCount}杯已售`}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  {/* 商品信息 */}
+                  <div className="p-3">
+                    <p className="text-sm font-semibold text-text-main truncate">
+                      {product.name}
+                    </p>
+                    {product.description && (
+                      <p className="mt-0.5 text-xs text-text-secondary line-clamp-1">
+                        {product.description}
+                      </p>
+                    )}
+                    <p className="mt-1.5 text-sm font-bold text-primary">
+                      &#xA5;{priceYuan}
+                    </p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 店铺信息 */}
+      <div className="mx-4 mt-6 overflow-hidden rounded-2xl bg-white p-4 shadow-sm">
+        <h3 className="mb-3 text-base font-bold text-text-main">店铺信息</h3>
+        <div className="space-y-2.5">
+          {settings?.businessHours && (
+            <div className="flex items-start gap-3">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8E8E93"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mt-0.5 shrink-0"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <div>
+                <p className="text-xs text-text-secondary">营业时间</p>
+                <p className="text-sm text-text-main">{settings.businessHours}</p>
+              </div>
+            </div>
+          )}
+          {settings?.address && (
+            <div className="flex items-start gap-3">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8E8E93"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mt-0.5 shrink-0"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <div>
+                <p className="text-xs text-text-secondary">地址</p>
+                <p className="text-sm text-text-main">{settings.address}</p>
+              </div>
+            </div>
+          )}
+          {settings?.contactInfo && (
+            <div className="flex items-start gap-3">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8E8E93"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mt-0.5 shrink-0"
+              >
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+              </svg>
+              <div>
+                <p className="text-xs text-text-secondary">联系方式</p>
+                <p className="text-sm text-text-main">{settings.contactInfo}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 关于我们 */}
+      {settings?.aboutText && (
+        <div className="mx-4 mt-3 overflow-hidden rounded-2xl bg-white p-4 shadow-sm">
+          <h3 className="mb-2 text-base font-bold text-text-main">关于我们</h3>
+          <p className="text-sm leading-relaxed text-text-secondary">
+            {settings.aboutText}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
