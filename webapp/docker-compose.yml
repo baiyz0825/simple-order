@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - db-data:/app/data
+      - uploads:/app/public/uploads
+    environment:
+      - JWT_SECRET=your-secret-key-change-me
+      - DATABASE_URL=file:/app/data/order.db
+
+volumes:
+  db-data:
+  uploads:
