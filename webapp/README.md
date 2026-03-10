@@ -14,7 +14,7 @@
 | 状态管理 | React Context + useReducer |
 | PWA | Service Worker + Web App Manifest |
 | 语言 | TypeScript |
-| 测试 | Vitest（9 个测试套件，覆盖全部 API） |
+| 测试 | Vitest（11 个测试套件，覆盖全部 API） |
 | 容器化 | Docker + Docker Compose |
 | 运行时 | Node.js >= 18 |
 
@@ -97,16 +97,18 @@ npm run dev
 | 登录/注册 | `/login` | 手机号+密码登录，支持新用户注册，已登录自动跳过 |
 | 关于我们 | `/about` | 店铺介绍、营业时间、联系方式 |
 
-### 管理端（B端） — 8 个页面
+### 管理端（B端） — 10 个页面
 
 | 页面 | 路由 | 说明 |
 |------|------|------|
 | 订单管理 | `/admin` | 查看所有订单，确认订单、更新制作进度、标记完成/取消，WebSocket 实时新订单通知 |
 | 商品管理 | `/admin/products` | 商品的增删改查、价格设置、图片上传、上下架管理 |
+| 用户管理 | `/admin/users` | 查看所有注册用户，搜索/筛选、编辑用户角色、查看用户订单、删除用户 |
 | 分类管理 | `/admin/categories` | 商品分类的增删改查、排序、启用/禁用 |
 | 属性模板 | `/admin/specs` | 规格模板管理（如杯型、糖度、冰量、加料），支持单选/多选 |
 | 制作流程 | `/admin/process` | 制作流程模板管理（如饮品制作、烘焙流程步骤） |
 | 店铺设置 | `/admin/settings` | 基本信息、首页配置（欢迎语/公告/Banner）、关于我们 |
+| 账户设置 | `/admin/account` | 管理员修改自己的名称、邮箱、密码 |
 | 管理员登录 | `/admin/login` | 邮箱+密码登录 |
 | 管理员注册 | `/admin/register` | 新管理员注册 |
 
@@ -201,7 +203,7 @@ npm run dev
 
 ### 测试
 
-项目包含 **9 个测试套件**，覆盖全部后端 API：
+项目包含 **11 个测试套件**，覆盖全部后端 API：
 
 ```bash
 npm run test
@@ -218,6 +220,8 @@ npm run test
 | `07-orders.test.ts` | 订单创建、状态流转、权限校验 |
 | `08-upload.test.ts` | 文件上传、权限校验 |
 | `09-websocket.test.ts` | WebSocket 连接、订阅、广播 |
+| `10-admin-users.test.ts` | 用户管理列表/详情/编辑/删除/用户订单 |
+| `11-admin-account.test.ts` | 管理员账户信息获取/修改名称/邮箱/密码 |
 
 测试在独立端口 3001 运行，使用独立的测试数据库 `test.db`，不影响开发数据。
 
@@ -273,6 +277,10 @@ npm run test
 | GET/POST | `/api/admin/process` | 流程模板列表/新增 |
 | GET/PUT/DELETE | `/api/admin/process/[id]` | 流程模板详情/修改/删除 |
 | GET/PUT | `/api/admin/settings` | 获取/更新店铺设置 |
+| GET | `/api/admin/users` | 用户列表（支持 `?keyword=&role=&page=&pageSize=`） |
+| GET/PUT/DELETE | `/api/admin/users/[id]` | 用户详情/编辑/删除 |
+| GET | `/api/admin/users/[id]/orders` | 用户的订单列表 |
+| GET/PUT | `/api/admin/account` | 管理员账户信息/修改（名称/邮箱/密码） |
 | POST | `/api/upload` | 文件上传（图片） |
 
 ## 数据模型
@@ -375,7 +383,7 @@ webapp/
 ├── docker-compose.yml         # Docker Compose 编排文件
 ├── src/
 │   ├── app/
-│   │   ├── api/               # API 路由（26 个接口）
+│   │   ├── api/               # API 路由（30 个接口）
 │   │   ├── admin/             # 管理端页面
 │   │   ├── menu/              # 点单页
 │   │   ├── order/             # 订单确认 & 详情
@@ -398,10 +406,10 @@ webapp/
 │   │   ├── cart.ts            # 购物车状态管理
 │   │   └── prisma.ts          # Prisma 客户端单例
 │   └── middleware.ts          # 路由守卫中间件
-├── tests/                     # API 集成测试（9 个套件）
+├── tests/                     # API 集成测试（11 个套件）
 │   ├── global-setup.ts        # 测试环境初始化
 │   ├── helpers.ts             # 测试工具函数
-│   └── 01~09-*.test.ts        # 测试用例文件
+│   └── 01~11-*.test.ts        # 测试用例文件
 └── package.json
 ```
 

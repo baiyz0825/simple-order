@@ -22,8 +22,8 @@ export async function setup() {
     DATABASE_URL: 'file:./data/test.db',
     JWT_SECRET: 'dev-secret-change-in-production',
     PORT: '3001',
-    NODE_ENV: 'test',
-  }
+    NODE_ENV: 'test' as const,
+  } satisfies NodeJS.ProcessEnv
 
   // Initialize test database schema
   console.log('[test-setup] Pushing database schema...')

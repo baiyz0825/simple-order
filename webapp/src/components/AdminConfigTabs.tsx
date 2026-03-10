@@ -8,6 +8,7 @@ const configTabs = [
   { label: '属性模板', href: '/admin/specs' },
   { label: '制作流程', href: '/admin/process' },
   { label: '店铺设置', href: '/admin/settings' },
+  { label: '账户设置', href: '/admin/account' },
 ]
 
 export default function AdminConfigTabs() {
