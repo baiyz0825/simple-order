@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '@/lib/admin-guard'
+import type { Prisma } from '@prisma/client'
 
 // GET /api/admin/users/:id/orders - 获取用户的订单列表
 export async function GET(
@@ -31,7 +32,7 @@ export async function GET(
     const minAmount = searchParams.get('minAmount') ? parseInt(searchParams.get('minAmount')!) : null
     const maxAmount = searchParams.get('maxAmount') ? parseInt(searchParams.get('maxAmount')!) : null
 
-    const where: Record<string, unknown> = { userId }
+    const where: Prisma.OrderWhereInput = { userId }
     
     if (status) {
       where.status = status
@@ -41,13 +42,13 @@ export async function GET(
     if (startDate || endDate) {
       where.createdAt = {}
       if (startDate) {
-        (where.createdAt as Record<string, Date>).gte = new Date(startDate)
+        where.createdAt.gte = new Date(startDate)
       }
       if (endDate) {
         // 结束日期设为当天23:59:59
-        const end: Date = new Date(endDate)
-        end.setHours(23, 59, 59, 999)
-        (where.createdAt as Record<string, Date>).lte = end
+        const endDateObj = new Date(endDate)
+        endDateObj.setHours(23, 59, 59, 999)
+        where.createdAt.lte = endDateObj
       }
     }
     
@@ -55,10 +56,10 @@ export async function GET(
     if (minAmount !== null || maxAmount !== null) {
       where.totalPrice = {}
       if (minAmount !== null) {
-        (where.totalPrice as Record<string, number>).gte = minAmount
+        where.totalPrice.gte = minAmount
       }
       if (maxAmount !== null) {
-        (where.totalPrice as Record<string, number>).lte = maxAmount
+        where.totalPrice.lte = maxAmount
       }
     }
 
