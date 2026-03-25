@@ -10,6 +10,7 @@ interface ProcessStep {
   name: string
   sort: number
   done: boolean
+  photos?: string[]
 }
 
 interface OrderItem {
@@ -199,14 +200,51 @@ function AdminItemProcess({
   steps: ProcessStep[]
   orderId: number
   itemIndex: number
-  onAdvanceStep: (orderId: number, itemIndex: number, stepIndex: number) => void
+  onAdvanceStep: (orderId: number, itemIndex: number, stepIndex: number, photo?: string) => void
   advancing: boolean
 }) {
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false)
+  const [currentStepIdx, setCurrentStepIdx] = useState<number | null>(null)
+  const [uploading, setUploading] = useState(false)
+
   if (!steps || steps.length === 0) return null
 
   const allDone = steps.every((s) => s.done)
-  // 找到当前步骤：第一个 done === false 的步骤
   const currentStepIndex = steps.findIndex((s) => !s.done)
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || currentStepIdx === null) return
+
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        const { url } = await res.json()
+        onAdvanceStep(orderId, itemIndex, currentStepIdx, url)
+        setShowPhotoUpload(false)
+        setCurrentStepIdx(null)
+      }
+    } catch {
+      // 忽略错误
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleSkipPhoto = () => {
+    if (currentStepIdx === null) return
+    onAdvanceStep(orderId, itemIndex, currentStepIdx)
+    setShowPhotoUpload(false)
+    setCurrentStepIdx(null)
+  }
 
   return (
     <div className="mt-2">
@@ -227,6 +265,29 @@ function AdminItemProcess({
         ))}
       </div>
 
+      {/* 各步骤照片展示 */}
+      {steps.some((s) => s.photos && s.photos.length > 0) && (
+        <div className="mb-2 flex flex-wrap gap-1">
+          {steps.map(
+            (step, i) =>
+              step.photos &&
+              step.photos.length > 0 && (
+                <div key={i} className="flex items-center gap-1">
+                  <span className="text-[10px] text-text-secondary">{step.name}:</span>
+                  {step.photos.map((photo, pi) => (
+                    <img
+                      key={pi}
+                      src={photo}
+                      alt={`${step.name}照片${pi + 1}`}
+                      className="h-8 w-8 rounded object-cover"
+                    />
+                  ))}
+                </div>
+              )
+          )}
+        </div>
+      )}
+
       {allDone ? (
         <span className="inline-flex items-center gap-1 text-xs font-medium text-success-green">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -235,13 +296,88 @@ function AdminItemProcess({
           已完成
         </span>
       ) : (
-        <button
-          onClick={() => onAdvanceStep(orderId, itemIndex, currentStepIndex)}
-          disabled={advancing}
-          className="inline-flex items-center gap-1 rounded-lg bg-progress-blue/10 px-3 py-1.5 text-xs font-medium text-progress-blue transition-colors active:bg-progress-blue/20 disabled:opacity-50"
-        >
-          下一步: {steps[currentStepIndex].name}
-        </button>
+        <>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setCurrentStepIdx(currentStepIndex)
+                setShowPhotoUpload(true)
+              }}
+              disabled={advancing}
+              className="inline-flex items-center gap-1 rounded-lg bg-progress-blue/10 px-3 py-1.5 text-xs font-medium text-progress-blue transition-colors active:bg-progress-blue/20 disabled:opacity-50"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              {steps[currentStepIndex].name}
+            </button>
+            <button
+              onClick={() => onAdvanceStep(orderId, itemIndex, currentStepIndex)}
+              disabled={advancing}
+              className="inline-flex items-center gap-1 rounded-lg border border-border-color px-3 py-1.5 text-xs text-text-secondary transition-colors active:bg-gray-50 disabled:opacity-50"
+            >
+              跳过照片
+            </button>
+          </div>
+
+          {/* 照片上传弹窗 */}
+          {showPhotoUpload && (
+            <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40">
+              <div className="mx-6 w-full max-w-sm rounded-2xl bg-white p-6">
+                <h3 className="text-center text-lg font-semibold text-text-main">
+                  上传进度照片
+                </h3>
+                <p className="mt-2 text-center text-sm text-text-secondary">
+                  步骤：{currentStepIdx !== null ? steps[currentStepIdx].name : ''}
+                </p>
+                <div className="mt-4">
+                  <label className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border-color bg-ios-bg py-8 cursor-pointer hover:border-primary transition-colors">
+                    {uploading ? (
+                      <div className="h-8 w-8 animate-spin rounded-full border-3 border-primary border-t-transparent" />
+                    ) : (
+                      <>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="1.5">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span className="mt-2 text-sm text-text-secondary">点击上传照片</span>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      className="hidden"
+                      disabled={uploading}
+                    />
+                  </label>
+                </div>
+                <div className="mt-4 flex gap-3">
+                  <button
+                    onClick={handleSkipPhoto}
+                    disabled={uploading}
+                    className="flex-1 rounded-xl border border-border-color py-3 text-sm font-medium text-text-secondary transition-colors active:bg-gray-50 disabled:opacity-50"
+                  >
+                    跳过
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowPhotoUpload(false)
+                      setCurrentStepIdx(null)
+                    }}
+                    disabled={uploading}
+                    className="flex-1 rounded-xl bg-gray-200 py-3 text-sm font-medium text-text-main transition-colors active:bg-gray-300 disabled:opacity-50"
+                  >
+                    取消
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
@@ -536,7 +672,8 @@ export default function AdminOrderPage() {
   const handleAdvanceStep = async (
     orderId: number,
     itemIndex: number,
-    stepIndex: number
+    stepIndex: number,
+    photo?: string
   ) => {
     setAdvancing(true)
 
@@ -544,7 +681,7 @@ export default function AdminOrderPage() {
       const res = await fetch(`/api/orders/${orderId}/process`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ itemIndex, stepIndex }),
+        body: JSON.stringify({ itemIndex, stepIndex, photo }),
       })
 
       if (res.ok) {

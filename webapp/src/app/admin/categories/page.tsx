@@ -239,8 +239,8 @@ export default function CategoriesPage() {
 
       {/* 新增/编辑弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
-          <div className="w-full max-w-lg rounded-t-2xl bg-white p-6 pb-[calc(env(safe-area-inset-bottom)+24px)] animate-[slideUp_0.3s_ease-out]">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
+          <div className="mx-4 w-full max-w-lg rounded-2xl bg-white p-6 animate-[fadeIn_0.2s_ease-out]">
             <h2 className="mb-5 text-lg font-semibold text-text-main">
               {editingId ? '编辑分类' : '添加分类'}
             </h2>
@@ -286,20 +286,34 @@ export default function CategoriesPage() {
                 <label className="mb-1 block text-sm text-text-secondary">
                   关联制作流程
                 </label>
-                <CustomSelect
-                  value={formData.processTemplateId ?? ''}
-                  options={[
-                    { label: '无', value: '' },
-                    ...processes.map((p) => ({ label: p.name, value: p.id })),
-                  ]}
-                  onChange={(val) =>
-                    setFormData({
-                      ...formData,
-                      processTemplateId: val ? Number(val) : null,
-                    })
-                  }
-                  placeholder="选择制作流程"
-                />
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <CustomSelect
+                      value={formData.processTemplateId ?? ''}
+                      options={[
+                        { label: '无', value: '' },
+                        ...processes.map((p) => ({ label: p.name, value: p.id })),
+                      ]}
+                      onChange={(val) =>
+                        setFormData({
+                          ...formData,
+                          processTemplateId: val ? Number(val) : null,
+                        })
+                      }
+                      placeholder="选择制作流程"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // 保存当前表单状态，跳转到流程页面
+                      window.location.href = '/admin/process'
+                    }}
+                    className="shrink-0 rounded-xl border border-primary px-4 py-2 text-sm text-primary active:bg-primary/10"
+                  >
+                    新建
+                  </button>
+                </div>
               </div>
             </div>
 

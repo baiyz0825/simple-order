@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { hashPassword } from '@/lib/auth'
-import bcrypt from 'bcryptjs'
 
 /**
  * POST /api/admin/setup
@@ -107,7 +106,6 @@ export async function POST(request: Request) {
 
     await prisma.shopSetting.createMany({
       data: settings,
-      skipDuplicates: true,
     })
 
     // 7. 如果选择填充测试数据
@@ -146,97 +144,77 @@ async function seedTestDataForShop() {
       }),
     ])
 
-    // 创建属性模板（尺寸）
-    const sizeTemplate = await prisma.propertyTemplate.create({
+    // 创建规格模板（尺寸）
+    await prisma.specTemplate.create({
       data: {
         name: '尺寸',
-        type: 'select',
-        options: ['小杯', '中杯', '大杯'],
-        isRequired: true,
+        type: 'single',
+        options: JSON.stringify([
+          { name: '小杯', priceDelta: 0 },
+          { name: '中杯', priceDelta: 4 },
+          { name: '大杯', priceDelta: 7 },
+        ]),
       },
     })
 
-    // 创建属性模板（温度）
-    const tempTemplate = await prisma.propertyTemplate.create({
+    // 创建规格模板（温度）
+    await prisma.specTemplate.create({
       data: {
         name: '温度',
-        type: 'select',
-        options: ['热饮', '冰饮'],
-        isRequired: true,
+        type: 'single',
+        options: JSON.stringify([
+          { name: '热饮', priceDelta: 0 },
+          { name: '冰饮', priceDelta: 0 },
+        ]),
       },
     })
 
-    // 创建示例商品
+    // 创建示例商品 - 美式咖啡
     await prisma.product.create({
       data: {
         name: '美式咖啡',
         description: '经典美式咖啡，浓郁香醇',
-        price: 18,
+        price: 1800, // 分
         categoryId: categories[0].id,
         imageUrl: '/api/placeholder/400?text=Americano',
-        isActive: true,
-        specs: {
-          create: [
-            {
-              name: '小杯热饮',
-              price: 18,
-            },
-            {
-              name: '中杯热饮',
-              price: 22,
-            },
-            {
-              name: '大杯热饮',
-              price: 25,
-            },
-            {
-              name: '小杯冰饮',
-              price: 18,
-            },
-            {
-              name: '中杯冰饮',
-              price: 22,
-            },
-            {
-              name: '大杯冰饮',
-              price: 25,
-            },
-          ],
-        },
+        isOnSale: true,
+        specs: JSON.stringify([
+          { name: '小杯热饮', price: 1800 },
+          { name: '中杯热饮', price: 2200 },
+          { name: '大杯热饮', price: 2500 },
+          { name: '小杯冰饮', price: 1800 },
+          { name: '中杯冰饮', price: 2200 },
+          { name: '大杯冰饮', price: 2500 },
+        ]),
       },
     })
 
+    // 创建示例商品 - 拿铁咖啡
     await prisma.product.create({
       data: {
         name: '拿铁咖啡',
         description: '香浓拿铁，奶泡绵密',
-        price: 22,
+        price: 2200, // 分
         categoryId: categories[0].id,
         imageUrl: '/api/placeholder/400?text=Latte',
-        isActive: true,
-        specs: {
-          create: [
-            {
-              name: '中杯热饮',
-              price: 22,
-            },
-            {
-              name: '大杯热饮',
-              price: 26,
-            },
-          ],
-        },
+        isOnSale: true,
+        specs: JSON.stringify([
+          { name: '中杯热饮', price: 2200 },
+          { name: '大杯热饮', price: 2600 },
+        ]),
       },
     })
 
+    // 创建示例商品 - 提拉米苏
     await prisma.product.create({
       data: {
         name: '提拉米苏',
         description: '经典意式甜点，入口即化',
-        price: 28,
+        price: 2800, // 分
         categoryId: categories[1].id,
         imageUrl: '/api/placeholder/400?text=Tiramisu',
-        isActive: true,
+        isOnSale: true,
+        specs: '[]',
       },
     })
 

@@ -10,6 +10,7 @@ interface ProcessStep {
   name: string
   sort: number
   done: boolean
+  photos?: string[]
 }
 
 interface OrderItem {
@@ -209,7 +210,13 @@ function OrderProgressBar({ status }: { status: Order['status'] }) {
 
 /* ---------- 商品制作进度时间轴 ---------- */
 
-function ItemProcessTimeline({ steps }: { steps: ProcessStep[] }) {
+function ItemProcessTimeline({ 
+  steps,
+  onImageClick 
+}: { 
+  steps: ProcessStep[]
+  onImageClick: (url: string) => void
+}) {
   if (!steps || steps.length === 0) return null
 
   // 找到当前步骤：第一个 done=false 的
@@ -253,33 +260,87 @@ function ItemProcessTimeline({ steps }: { steps: ProcessStep[] }) {
               )}
             </div>
             {/* 右侧：步骤信息 */}
-            <div className="pb-3 pt-0.5">
-              <span
-                className={`text-sm ${
-                  isDone
-                    ? 'text-text-main'
-                    : isCurrent
-                      ? 'text-progress-blue font-medium'
-                      : 'text-text-light'
-                }`}
-              >
-                {step.name}
-              </span>
-              <span
-                className={`ml-2 text-xs ${
-                  isDone
-                    ? 'text-success-green'
-                    : isCurrent
-                      ? 'text-progress-blue'
-                      : 'text-text-light'
-                }`}
-              >
-                {isDone ? '已完成' : isCurrent ? '进行中' : '等待中'}
-              </span>
+            <div className="pb-3 pt-0.5 flex-1">
+              <div className="flex items-center">
+                <span
+                  className={`text-sm ${
+                    isDone
+                      ? 'text-text-main'
+                      : isCurrent
+                        ? 'text-progress-blue font-medium'
+                        : 'text-text-light'
+                  }`}
+                >
+                  {step.name}
+                </span>
+                <span
+                  className={`ml-2 text-xs ${
+                    isDone
+                      ? 'text-success-green'
+                      : isCurrent
+                        ? 'text-progress-blue'
+                        : 'text-text-light'
+                  }`}
+                >
+                  {isDone ? '已完成' : isCurrent ? '进行中' : '等待中'}
+                </span>
+              </div>
+              
+              {/* 步骤照片展示 */}
+              {step.photos && step.photos.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {step.photos.map((photo, photoIdx) => (
+                    <img
+                      key={photoIdx}
+                      src={photo}
+                      alt={`${step.name}照片${photoIdx + 1}`}
+                      className="w-16 h-16 rounded-lg object-cover cursor-pointer transition-transform active:scale-95"
+                      onClick={() => onImageClick(photo)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )
       })}
+    </div>
+  )
+}
+
+/* ---------- 图片预览弹窗 ---------- */
+
+function ImagePreviewModal({
+  imageUrl,
+  onClose
+}: {
+  imageUrl: string | null
+  onClose: () => void
+}) {
+  if (!imageUrl) return null
+
+  return (
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80"
+      onClick={onClose}
+    >
+      <div className="relative max-w-[90vw] max-h-[90vh]">
+        <img
+          src={imageUrl}
+          alt="预览图片"
+          className="max-w-full max-h-[90vh] object-contain rounded-lg"
+          onClick={(e) => e.stopPropagation()}
+        />
+        <button
+          onClick={onClose}
+          className="absolute -top-10 right-0 text-white/80 hover:text-white transition-colors"
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
     </div>
   )
 }
@@ -294,6 +355,7 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   // 获取订单数据
   const fetchOrder = useCallback(async () => {
@@ -468,7 +530,10 @@ export default function OrderDetailPage() {
               {/* 制作进度时间轴 */}
               {item.process && item.process.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-border-color">
-                  <ItemProcessTimeline steps={item.process} />
+                  <ItemProcessTimeline 
+                    steps={item.process} 
+                    onImageClick={setPreviewImage}
+                  />
                 </div>
               )}
             </div>
@@ -497,6 +562,12 @@ export default function OrderDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* 图片预览弹窗 */}
+      <ImagePreviewModal
+        imageUrl={previewImage}
+        onClose={() => setPreviewImage(null)}
+      />
     </div>
   )
 }

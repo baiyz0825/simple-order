@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart'
 import CategoryNav from '@/components/CategoryNav'
 import ProductCard from '@/components/ProductCard'
@@ -36,6 +37,7 @@ interface MenuProduct {
 // ─── 主页面组件 ──────────────────────────────────────────────────
 
 export default function MenuPage() {
+  const router = useRouter()
   const { addToCart } = useCart()
 
   const [categories, setCategories] = useState<MenuCategory[]>([])
@@ -218,10 +220,23 @@ export default function MenuPage() {
     <div className="flex min-h-screen flex-col bg-ios-bg">
       {/* 顶部标题区 */}
       <header className="bg-white px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-        <h1 className="text-xl font-bold text-text-main">{shopName}</h1>
-        <p className="mt-0.5 text-sm text-text-secondary">
-          {shopSubtitle}
-        </p>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.push('/')}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-ios-bg text-text-secondary active:bg-gray-200"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+          </button>
+          <div>
+            <h1 className="text-xl font-bold text-text-main">{shopName}</h1>
+            <p className="mt-0.5 text-sm text-text-secondary">
+              {shopSubtitle}
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* 主体区域：分类导航 + 商品列表 */}

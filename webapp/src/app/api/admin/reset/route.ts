@@ -38,8 +38,8 @@ export async function POST(request: Request) {
     }
 
     // 4. 执行重置操作
-    // 删除所有订单规格
-    await prisma.productSpec.deleteMany({})
+    // 删除所有订单
+    await prisma.order.deleteMany({})
 
     // 删除所有商品
     await prisma.product.deleteMany({})
@@ -47,17 +47,17 @@ export async function POST(request: Request) {
     // 删除所有分类
     await prisma.category.deleteMany({})
 
-    // 删除所有属性模板
-    await prisma.propertyTemplate.deleteMany({})
+    // 删除所有规格模板
+    await prisma.specTemplate.deleteMany({})
+
+    // 删除所有流程模板
+    await prisma.processTemplate.deleteMany({})
 
     // 删除所有设置
     await prisma.shopSetting.deleteMany({})
 
     // 删除所有用户（包括当前管理员）
     await prisma.user.deleteMany({})
-
-    // 删除所有订单
-    await prisma.order.deleteMany({})
 
     // 5. 重置完成
     return NextResponse.json({

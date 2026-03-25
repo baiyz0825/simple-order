@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import CustomSelect from '@/components/CustomSelect'
 
 /* ---------- 类型定义 ---------- */
@@ -64,6 +65,8 @@ const EMPTY_FORM = {
 /* ========== 主组件 ========== */
 
 export default function AdminProductsPage() {
+  const router = useRouter()
+  
   /* --- 列表相关 --- */
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -725,23 +728,38 @@ export default function AdminProductsPage() {
                   <label className="mb-1.5 block text-sm font-medium text-text-main">
                     制作流程
                   </label>
-                  <CustomSelect
-                    value={form.processTemplateId ?? ''}
-                    options={[
-                      { label: '继承分类', value: '' },
-                      ...processTemplates.map((pt) => ({
-                        label: pt.name,
-                        value: pt.id,
-                      })),
-                    ]}
-                    onChange={(val) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        processTemplateId: val ? Number(val) : null,
-                      }))
-                    }
-                    placeholder="选择制作流程"
-                  />
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1">
+                      <CustomSelect
+                        value={form.processTemplateId ?? ''}
+                        options={[
+                          { label: '继承分类', value: '' },
+                          ...processTemplates.map((pt) => ({
+                            label: pt.name,
+                            value: pt.id,
+                          })),
+                        ]}
+                        onChange={(val) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            processTemplateId: val ? Number(val) : null,
+                          }))
+                        }
+                        placeholder="选择制作流程"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => router.push('/admin/process')}
+                      className="flex h-11 shrink-0 items-center gap-1 rounded-lg border border-primary bg-primary/10 px-3 text-sm font-medium text-primary transition-colors active:bg-primary/20"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                      新建
+                    </button>
+                  </div>
                 </div>
 
                 {/* ---- 排序 ---- */}

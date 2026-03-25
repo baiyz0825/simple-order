@@ -68,10 +68,14 @@ export async function middleware(request: NextRequest) {
           // 未初始化，重定向到初始化页面
           return NextResponse.redirect(new URL('/admin/setup', request.url))
         }
+      } else {
+        // API 返回错误，认为未初始化，跳转到 setup
+        return NextResponse.redirect(new URL('/admin/setup', request.url))
       }
     } catch (error) {
       console.error('检查初始化状态失败:', error)
-      // 出错时假设已初始化，避免死循环
+      // 出错时认为未初始化，跳转到 setup 页面
+      return NextResponse.redirect(new URL('/admin/setup', request.url))
     }
 
     // 已登录管理员访问管理登录/注册页 → 跳转到管理后台

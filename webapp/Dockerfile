@@ -10,9 +10,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# 设置构建时数据库路径（构建阶段仅生成 Prisma Client，不需要真实 DB）
-ENV DATABASE_URL="file:./prisma/data/order.db"
+# 设置构建时数据库路径
+ENV DATABASE_URL="file:../data/order.db"
+
+# 生成 Prisma Client
 RUN npx prisma generate
+
+# 构建应用
 RUN npm run build
 
 # ========== 阶段3: 运行 ==========
@@ -21,24 +25,23 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV DATABASE_URL="file:../data/order.db"
 
-# 从构建产物中复制必要文件
+# 复制完整的 node_modules（包含 prisma generate 生成的客户端）
+COPY --from=builder /app/node_modules ./node_modules
+
+# 复制 package.json 和 package-lock.json
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json ./
+
+# 复制构建产物
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/server.js ./
+COPY --from=builder /app/next.config.ts ./
 
-# Prisma 运行时
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+# 复制 Prisma 相关文件
 COPY --from=builder /app/prisma ./prisma
-
-# 自定义服务器（WebSocket 支持）
-COPY --from=builder /app/server.js ./server.js
-
-# 种子数据脚本依赖
-COPY --from=builder /app/node_modules/tsx ./node_modules/tsx
-COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
-COPY --from=builder /app/node_modules/uuid ./node_modules/uuid
 
 # 启动脚本
 COPY --from=builder /app/entrypoint.sh ./entrypoint.sh

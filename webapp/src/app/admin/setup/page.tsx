@@ -35,14 +35,22 @@ export default function SetupPage() {
     seedTestData: false,
   })
 
-  const updateForm = (section: string, field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section as keyof typeof prev],
-        [field]: value,
-      },
-    }))
+  const updateForm = (section: string, field: string, value: unknown) => {
+    setFormData((prev) => {
+      // seedTestData 是布尔值，直接更新
+      if (section === 'seedTestData') {
+        return { ...prev, seedTestData: value as boolean }
+      }
+      // 其他 section 是对象类型
+      const sectionKey = section as 'admin' | 'shopInfo' | 'homeContent'
+      return {
+        ...prev,
+        [section]: {
+          ...prev[sectionKey],
+          [field]: value,
+        },
+      }
+    })
   }
 
   const validateStep = (currentStep: number): boolean => {

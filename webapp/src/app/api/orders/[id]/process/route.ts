@@ -12,7 +12,8 @@ export async function PATCH(
     if (authError) return authError
 
     const { id } = await params
-    const { itemIndex, stepIndex } = await request.json()
+    const body = await request.json()
+    const { itemIndex, stepIndex, photo } = body
 
     if (itemIndex === undefined || stepIndex === undefined) {
       return NextResponse.json({ error: '缺少 itemIndex 或 stepIndex' }, { status: 400 })
@@ -38,7 +39,18 @@ export async function PATCH(
       return NextResponse.json({ error: 'stepIndex 越界' }, { status: 400 })
     }
 
-    item.process[stepIndex].done = true
+    const step = item.process[stepIndex]
+
+    // 如果有照片，添加到步骤的照片列表
+    if (photo) {
+      if (!step.photos) {
+        step.photos = []
+      }
+      step.photos.push(photo)
+    }
+
+    // 标记步骤完成
+    step.done = true
 
     // 检查是否所有商品都完成
     const updateData: any = {
