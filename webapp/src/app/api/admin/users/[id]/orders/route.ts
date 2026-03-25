@@ -45,7 +45,7 @@ export async function GET(
       }
       if (endDate) {
         // 结束日期设为当天23:59:59
-        const end = new Date(endDate)
+        const end: Date = new Date(endDate)
         end.setHours(23, 59, 59, 999)
         (where.createdAt as Record<string, Date>).lte = end
       }
