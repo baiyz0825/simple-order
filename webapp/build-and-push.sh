@@ -72,12 +72,6 @@ get_repo_info() {
         print_error "无法解析 GitHub URL: $GIT_REMOTE"
         exit 1
     fi
-
-    # 对于 monorepo，使用 webapp 作为镜像名的一部分
-    # 如果 REPO_NAME 包含 webapp，则保持不变；否则添加 -webapp 后缀
-    if [[ "$REPO_NAME" != *"webapp"* ]]; then
-        REPO_NAME="${REPO_NAME}-webapp"
-    fi
 }
 
 # 检查 buildx 是否可用
